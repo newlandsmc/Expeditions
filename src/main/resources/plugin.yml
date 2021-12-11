@@ -1,0 +1,6 @@
+name: TimeRewards
+version: 1.0
+main: me.cookie.timerewards.TimeRewards
+description: A plugin that rewards players based on the time they were away.
+api-version: 1.18
+author: Cookie

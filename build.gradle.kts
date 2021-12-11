@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.5.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
     java
 }
 
@@ -22,6 +23,11 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    destinationDirectory.set(file("D:\\coding\\Test Servers\\TimeRewards\\plugins"))
 }
 
 tasks.getByName<Test>("test") {
