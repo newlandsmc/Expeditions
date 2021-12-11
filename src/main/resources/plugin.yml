@@ -4,3 +4,8 @@ main: me.cookie.timerewards.TimeRewards
 description: A plugin that rewards players based on the time they were away.
 api-version: 1.18
 author: Cookie
+
+commands:
+  jrewards:
+    permission: jrewards.claim
+    description: Opens a gui where you can claim your rewards
