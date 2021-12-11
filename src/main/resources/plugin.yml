@@ -1,11 +1,30 @@
-name: TimeRewards
+name: RejoinRewards
 version: 1.0
-main: me.cookie.timerewards.TimeRewards
+main: me.cookie.rejoinrewards.RejoinRewards
 description: A plugin that rewards players based on the time they were away.
 api-version: 1.18
 author: Cookie
 
 commands:
   jrewards:
-    permission: jrewards.claim
-    description: Opens a gui where you can claim your rewards
+    permission: jrewards.use
+    description: Base command.
+    usage: /jrewards
+
+permissions:
+  jrewards.use:
+    description: Base command permission, without it you wont be able to use any subcommands.
+    default: op
+    children:
+      - jrewards.claim
+      - jrewards.view
+      - jrewards.clear
+  jrewards.claim:
+    description: Permission to allow the player to claim their rejoin rewards.
+    default: op
+  jrewards.view:
+    description: Permission to allow the viewing of other player's rewards.
+    default: op
+  jrewards.clear:
+    description: Permission to allow clearing of other player's rewards.
+    default: op

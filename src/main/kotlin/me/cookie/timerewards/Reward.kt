@@ -16,7 +16,7 @@ class Reward {
 
 /* TODO make storage persistent (database/file storage) */
 val playerRewardMap = HashMap<UUID, List<ItemStack>>()
-private val plugin = JavaPlugin.getPlugin(TimeRewards::class.java)
+private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
 
 fun Player.generateOfflineRewards(): List<ItemStack> {
     val items = mutableListOf<ItemStack>()

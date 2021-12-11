@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
 
-class TimeRewards: JavaPlugin() {
+class RejoinRewards: JavaPlugin() {
     override fun onEnable() {
         server.pluginManager.registerEvents(PlayerJoin(), this)
         server.pluginManager.registerEvents(PlayerQuit(), this)
@@ -31,9 +31,9 @@ val Player.playerMenuUtility: PlayerMenuUtility
 get() {
     val playerMenuUtility: PlayerMenuUtility
     if (!(playerMenuUtilityMap.containsKey(this))) {
-        playerMenuUtility = PlayerMenuUtility(this);
-        playerMenuUtilityMap[this] = playerMenuUtility;
-        return playerMenuUtility;
+        playerMenuUtility = PlayerMenuUtility(this)
+        playerMenuUtilityMap[this] = playerMenuUtility
+        return playerMenuUtility
     }
     return playerMenuUtilityMap[this]!!
 }
