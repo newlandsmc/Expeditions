@@ -1,9 +1,9 @@
-package me.cookie.timerewards.listeners
+package me.cookie.rejoinrewards.listeners
 
-import me.cookie.timerewards.RejoinRewards
-import me.cookie.timerewards.generateOfflineRewards
-import me.cookie.timerewards.lastLogoff
-import me.cookie.timerewards.playerRewardMap
+import me.cookie.rejoinrewards.RejoinRewards
+import me.cookie.rejoinrewards.generateOfflineRewards
+import me.cookie.rejoinrewards.lastLogoff
+import me.cookie.rejoinrewards.playerRewardMap
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.event.EventHandler

@@ -1,9 +1,9 @@
-package me.cookie.timerewards
+package me.cookie.rejoinrewards
 
-import me.cookie.timerewards.commands.ClaimReward
-import me.cookie.timerewards.listeners.MenuHandler
-import me.cookie.timerewards.listeners.PlayerJoin
-import me.cookie.timerewards.listeners.PlayerQuit
+import me.cookie.rejoinrewards.commands.ClaimReward
+import me.cookie.rejoinrewards.listeners.MenuHandler
+import me.cookie.rejoinrewards.listeners.PlayerJoin
+import me.cookie.rejoinrewards.listeners.PlayerQuit
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 

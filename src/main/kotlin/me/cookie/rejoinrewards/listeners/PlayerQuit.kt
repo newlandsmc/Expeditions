@@ -1,7 +1,7 @@
-package me.cookie.timerewards.listeners
+package me.cookie.rejoinrewards.listeners
 
-import me.cookie.timerewards.RejoinRewards
-import me.cookie.timerewards.lastLogoff
+import me.cookie.rejoinrewards.RejoinRewards
+import me.cookie.rejoinrewards.lastLogoff
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerQuitEvent

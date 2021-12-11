@@ -1,9 +1,9 @@
-package me.cookie.timerewards.commands
+package me.cookie.rejoinrewards.commands
 
-import me.cookie.timerewards.RejoinRewards
-import me.cookie.timerewards.gui.menus.RewardGUI
-import me.cookie.timerewards.playerMenuUtility
-import me.cookie.timerewards.playerRewardMap
+import me.cookie.rejoinrewards.RejoinRewards
+import me.cookie.rejoinrewards.gui.menus.RewardGUI
+import me.cookie.rejoinrewards.playerMenuUtility
+import me.cookie.rejoinrewards.playerRewardMap
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit

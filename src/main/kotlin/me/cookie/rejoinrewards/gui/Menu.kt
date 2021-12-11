@@ -1,6 +1,6 @@
-package me.cookie.timerewards.gui
+package me.cookie.rejoinrewards.gui
 
-import me.cookie.timerewards.PlayerMenuUtility
+import me.cookie.rejoinrewards.PlayerMenuUtility
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
