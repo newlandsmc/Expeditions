@@ -15,10 +15,6 @@ permissions:
   jrewards.use:
     description: Base command permission, without it you wont be able to use any subcommands.
     default: op
-    children:
-      - jrewards.claim
-      - jrewards.view
-      - jrewards.clear
   jrewards.claim:
     description: Permission to allow the player to claim their rejoin rewards.
     default: op

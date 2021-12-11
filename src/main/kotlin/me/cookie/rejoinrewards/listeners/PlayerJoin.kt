@@ -1,11 +1,7 @@
 package me.cookie.rejoinrewards.listeners
 
-import me.cookie.rejoinrewards.RejoinRewards
-import me.cookie.rejoinrewards.generateOfflineRewards
-import me.cookie.rejoinrewards.lastLogoff
-import me.cookie.rejoinrewards.playerRewardMap
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
+import me.cookie.rejoinrewards.*
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -18,10 +14,9 @@ class PlayerJoin: Listener {
         val player = event.player
 
         event.joinMessage(
-            Component.text(
-                /* TODO: needs to be configurable */
-                "${player.name} has returned from their expedition!",
-                NamedTextColor.YELLOW
+            MiniMessage.get().parse(
+                plugin.config.getString("welcome-back")!!
+                    .formatPlayerPlaceholders(event.player)
             )
         )
 

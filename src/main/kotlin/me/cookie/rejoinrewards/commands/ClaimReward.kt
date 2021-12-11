@@ -1,11 +1,13 @@
 package me.cookie.rejoinrewards.commands
 
 import me.cookie.rejoinrewards.RejoinRewards
+import me.cookie.rejoinrewards.formatPlayerPlaceholders
 import me.cookie.rejoinrewards.gui.menus.RewardGUI
 import me.cookie.rejoinrewards.playerMenuUtility
 import me.cookie.rejoinrewards.playerRewardMap
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -32,8 +34,10 @@ class ClaimReward: CommandExecutor {
 
         if(!player.hasPermission("jrewards.${args[0].lowercase()}")){
             player.sendMessage(
-                //TODO make configurable
-                Component.text("You have no permission", NamedTextColor.RED)
+                MiniMessage.get().parse(
+                    plugin.config.getString("no-permission")!!
+                        .formatPlayerPlaceholders(player)
+                )
             )
             return true
         }
@@ -44,9 +48,12 @@ class ClaimReward: CommandExecutor {
                 rewardGUI.open()
             }
             "view" -> {
-                if(args[1].isEmpty()){
+                if(args.size < 2){
                     player.sendMessage(
-                        Component.text("Please specify a player name")
+                        MiniMessage.get().parse(
+                            plugin.config.getString("invalid-usage")!!
+                                .formatPlayerPlaceholders(player)
+                        )
                     )
                     return true
                 }
@@ -65,9 +72,12 @@ class ClaimReward: CommandExecutor {
                 return true
             }
             "clear" -> {
-                if(args[1].isEmpty()){
+                if(args.size < 2){
                     player.sendMessage(
-                        Component.text("Please specify a player name")
+                        MiniMessage.get().parse(
+                            plugin.config.getString("invalid-usage")!!
+                                .formatPlayerPlaceholders(player)
+                        )
                     )
                     return true
                 }
