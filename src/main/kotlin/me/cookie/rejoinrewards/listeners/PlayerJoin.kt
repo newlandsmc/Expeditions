@@ -24,7 +24,6 @@ class PlayerJoin: Listener {
             "${player.name} was gone for ${(System.currentTimeMillis() - player.lastLogoff!!) / 60000} minute(s)."
         )
 
-
         playerRewardMap[player.uniqueId] = player.generateOfflineRewards()
         /*
         object : BukkitRunnable() {

@@ -24,6 +24,6 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
     }
 
     override fun setMenuItems() {
-        _inventory!!.setContents(playerMenuUtility.owner.generateOfflineRewards().toTypedArray())
+        _inventory!!.setContents(playerRewardMap[playerMenuUtility.owner.uniqueId]!!.toTypedArray())
     }
 }

@@ -16,7 +16,7 @@ val rewardConfig = plugin.rewardsConfig.getCustomConfig()
 val rewards = rewardConfig!!.getConfigurationSection("Rewards")!!.getKeys(false).toList()
 
 fun Player.generateOfflineRewards(): List<ItemStack> {
-    val offlineMinutes = 241 /*(System.currentTimeMillis() - this.lastLogoff!!) / 60000*/
+    val offlineMinutes = (System.currentTimeMillis() - this.lastLogoff!!) / 60000
     val items = mutableListOf<ItemStack>()
 
     // Add old rewards
@@ -60,7 +60,7 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
     // Keeps looping until out of weight
     while(weight > 0){
         // Player doesn't have enough weight for this reward
-        val reward = rewards[Random().nextInt(rewards.size-1)]
+        val reward = rewards[Random().nextInt(rewards.size)]
         val rewardWeight = rewardConfig.getInt("Rewards.$reward.weight")
         if(rewardWeight > weight) {
             continue
@@ -69,6 +69,7 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
             items.add(
                 ItemStack(Material.valueOf(reward))
             )
+            if(items.size >= 27) return items // hard limit, inventory is full
         }
 
     }
