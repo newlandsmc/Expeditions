@@ -20,7 +20,7 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
     }
 
     override fun handleClose(e: InventoryCloseEvent) {
-        playerRewardMap[e.player.uniqueId] = e.inventory.contents!!.asList() as List<ItemStack>
+        playerRewardMap[e.player.uniqueId] = e.inventory.contents!!.toList() as List<ItemStack>
     }
 
     override fun setMenuItems() {
