@@ -23,15 +23,15 @@ class PlayerJoin: Listener {
 
         player.initIntoDB()
 
-        playerRewardMap[player.uniqueId] = player.generateOfflineRewards()
-
-        if(playerRewardMap[player.uniqueId]!!.isNotEmpty()){
+        val generatedItems = player.generateOfflineRewards()
+        if(generatedItems.isNotEmpty()){
             player.queueMessage(
                 MiniMessage.get().parse(
                     plugin.config.getString("claim-reminder")!!
                 ),
                 5
             )
+            player.updateRewardItems(generatedItems)
         }
 
         /*

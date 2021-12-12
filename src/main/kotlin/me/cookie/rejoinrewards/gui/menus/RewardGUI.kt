@@ -2,7 +2,8 @@ package me.cookie.rejoinrewards.gui.menus
 
 import me.cookie.rejoinrewards.PlayerMenuUtility
 import me.cookie.rejoinrewards.gui.Menu
-import me.cookie.rejoinrewards.playerRewardMap
+import me.cookie.rejoinrewards.rewardItems
+import me.cookie.rejoinrewards.updateRewardItems
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -27,11 +28,11 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
             if(it.type != Material.AIR) contents.add(it)
         }
         if(contents.isNotEmpty())
-            playerRewardMap[e.player.uniqueId] = contents.toList()
+            playerMenuUtility.owner.updateRewardItems(contents.toList())
 
     }
 
     override fun setMenuItems() {
-        _inventory!!.setContents(playerRewardMap[playerMenuUtility.owner.uniqueId]!!.toTypedArray())
+        _inventory!!.setContents(playerMenuUtility.owner.rewardItems.toTypedArray())
     }
 }

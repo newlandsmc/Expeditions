@@ -230,6 +230,6 @@ class H2Storage {
             return
         }
         logger.info("Closed connection")
-        connection?.close()
+        connection!!.close()
     }
 }

@@ -15,6 +15,7 @@ class RejoinRewards: JavaPlugin() {
     lateinit var rewardsConfig: RewardConfig
     lateinit var database: H2Storage
     override fun onEnable() {
+
         registerCommands()
         registerEvents()
 
@@ -29,8 +30,8 @@ class RejoinRewards: JavaPlugin() {
         database.connect()
 
         database.initTable(
-            "playerTimes",
-            listOf("UUID varchar(255)", "LOGOFF long"),
+            "playerData",
+            listOf("UUID varchar(255)", "LOGOFF long", "ITEMS varchar"),
         )
     }
 
@@ -46,7 +47,6 @@ class RejoinRewards: JavaPlugin() {
         server.pluginManager.registerEvents(PlayerQuit(), this)
         server.pluginManager.registerEvents(MenuHandler(), this)
     }
-
 }
 
 private val playerMenuUtilityMap = HashMap<Player, PlayerMenuUtility>()

@@ -1,10 +1,7 @@
 package me.cookie.rejoinrewards.commands
 
-import me.cookie.rejoinrewards.RejoinRewards
-import me.cookie.rejoinrewards.formatPlayerPlaceholders
+import me.cookie.rejoinrewards.*
 import me.cookie.rejoinrewards.gui.menus.RewardGUI
-import me.cookie.rejoinrewards.playerMenuUtility
-import me.cookie.rejoinrewards.playerRewardMap
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -66,7 +63,7 @@ class ClaimReward: CommandExecutor {
                     Component.text("Viewing ${viewing!!.name}'s rewards.")
                 )
 
-                inventory.setContents(playerRewardMap[viewing.uniqueId]!!.toTypedArray()) // Fill the inventory with their rewards
+                inventory.setContents(getRewardItems(viewing.uniqueId).toTypedArray()) // Fill the inventory with their rewards
 
                 player.openInventory(inventory)
                 return true
@@ -84,7 +81,7 @@ class ClaimReward: CommandExecutor {
 
                 val clearing = Bukkit.getPlayer(args[1])
 
-                playerRewardMap[clearing!!.uniqueId] = listOf() // Set to empty list
+                clearing!!.updateRewardItems(listOf())  // Set to empty list
                 return true
             }
         }

@@ -10,22 +10,14 @@ import java.util.*
 
 private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
 
-/* TODO make storage persistent (database/file storage) */
-val playerRewardMap = HashMap<UUID, List<ItemStack>>()
 val rewardConfig = plugin.rewardsConfig.getCustomConfig()
 val rewards = rewardConfig!!.getConfigurationSection("Rewards")!!.getKeys(false).toList()
 
 fun Player.generateOfflineRewards(): List<ItemStack> {
-    val offlineMinutes = (System.currentTimeMillis() - this.lastLogoff) / 60000
+    val offlineMinutes = /*(System.currentTimeMillis() - this.lastLogoff) / 60000*/ 400
     val items = mutableListOf<ItemStack>()
 
-    // Add old rewards
-    if(playerRewardMap[this.uniqueId] != null){
-        playerRewardMap[this.uniqueId]!!.forEach {
-            if(items.size >= 27) return items // hard limit, inventory is full
-            items.add(it)
-        }
-    }
+    items.addAll(this.rewardItems)
 
     val rewardKeys = rewardConfig!!.getConfigurationSection("Tiers")!!.getKeys(false)
 
@@ -52,7 +44,7 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
             >=
             section.toInt()
             &&
-            i == rewardKeys.size
+            i == rewardKeys.size-1
         ){
             weight = rewardConfig.getInt(
                 "Tiers.$section.weight"
@@ -76,7 +68,6 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
         }
         previousSection = section
     }
-
     // I know while loops the main thread, but let's hope for the best :)
     // Keeps looping until out of weight
     while(weight > 0){
