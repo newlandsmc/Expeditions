@@ -17,6 +17,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
