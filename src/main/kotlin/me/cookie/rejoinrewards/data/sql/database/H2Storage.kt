@@ -1,32 +1,50 @@
 package me.cookie.rejoinrewards.data.sql.database
 
-import dev.emortal.munchcrunch.database.DBCache
-import dev.emortal.munchcrunch.database.Values
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import me.cookie.rejoinrewards.MethodHolder
 import me.cookie.rejoinrewards.RejoinRewards
 import org.bukkit.plugin.java.JavaPlugin
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 
-class SQLStorage(
-    private val host: String,
-    private val port: String,
-    private val username: String,
-    private val password: String,
-    private val database: String
-) {
-    private val logger = JavaPlugin.getPlugin(RejoinRewards::class.java).logger
+class H2Storage {
+    private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+    private val logger = plugin.logger
 
     private var connection: Connection? = null
 
+    fun initTable(
+        name: String,
+        columns: List<String>,
+    ) = runBlocking {
+        launch {
+            var sqlString = "CREATE TABLE IF NOT EXISTS $name "
+            var valuesString = "("
+            for((i, column) in columns.withIndex()){
+                if(i+1 == columns.size){
+                    valuesString += "$column)"
+                    break
+                }
+                valuesString += "$column, "
+            }
+            sqlString += "$valuesString;"
+
+
+            val preparedStatement = connection!!.prepareStatement(sqlString)
+
+            try{
+                preparedStatement.execute()
+                logger.info("Successfully initialized table $name with values $valuesString")
+            }catch (ex: SQLException){
+                ex.printStackTrace()
+            }
+        }
+    }
 
     fun insertIntoTable(
         table: String,
         columns: List<String>,
-        whatToRun: MethodHolder = MethodHolder(),
         vararg data: Values
     ) = runBlocking {
         launch {
@@ -72,7 +90,6 @@ class SQLStorage(
             }catch (ex: SQLException){
                 ex.printStackTrace()
             }
-            whatToRun.codeToRun()
         }
     }
 
@@ -81,7 +98,6 @@ class SQLStorage(
         columns: List<String>,
         where: String,
         values: Values,
-        whatToRun: MethodHolder = MethodHolder()
     ) = runBlocking {
         launch {
             var sqlString = "UPDATE $table SET "
@@ -107,11 +123,10 @@ class SQLStorage(
             val preparedStatement = connection!!.prepareStatement(sqlString)
             try{
                 preparedStatement.executeUpdate()
-                logger.info("Successfully updated $columns to ${valuesString}where $where")
+                logger.info("Successfully updated $columns to $valuesString where $where")
             }catch (ex: SQLException){
                 ex.printStackTrace()
             }
-            whatToRun.codeToRun()
         }
     }
 
@@ -120,70 +135,61 @@ class SQLStorage(
         column: String,
         where: String,
         limit: Int = 1,
-        dbCache: DBCache,
-        whatToRun: MethodHolder = MethodHolder()
-    ) = runBlocking {
-        launch {
-            val preparedStatement = connection!!.prepareStatement("SELECT $column FROM $table WHERE $where")
-            val resultList = mutableListOf<Values>()
-            val results = preparedStatement.executeQuery()
-            var i = 0
-            while (results.next() && i < limit){
-                i++
-                resultList.add(Values(results.getString(1)))
-            }
-            dbCache.rows = resultList
-            whatToRun.codeToRun()
+    ): List<Values> {
+        val preparedStatement = connection!!.prepareStatement("SELECT $column FROM $table WHERE $where;")
+        val resultList = mutableListOf<Values>()
+        val results = preparedStatement.executeQuery()
+        var i = 0
+        while (results.next() && i < limit){
+            i++
+            resultList.add(Values(results.getString(1)))
         }
+        return resultList
     }
 
     fun getTable(table: String,
                  orderColumn: String = "",
                  orderStyle: String = "",
                  limit: Int = Int.MAX_VALUE,
-                 dbCache: DBCache,
-                 whatToRun: MethodHolder = MethodHolder()
-    ) = runBlocking {
-        launch {
-            val columnsStatement = connection!!
-                .prepareStatement(
-                    "SELECT COLUMN_NAME " +
-                            "FROM INFORMATION_SCHEMA.COLUMNS " +
-                            "WHERE TABLE_NAME  = '$table' " +
-                            "ORDER BY ORDINAL_POSITION"
-                )
-            val columnsList = mutableListOf<String>()
-            val columnsResults = columnsStatement.executeQuery()
+    ): List<Values> {
+        val columnsStatement = connection!!
+            .prepareStatement(
+                "SELECT COLUMN_NAME " +
+                        "FROM INFORMATION_SCHEMA.COLUMNS " +
+                        "WHERE TABLE_NAME  = '$table' " +
+                        "ORDER BY ORDINAL_POSITION;"
+            )
+        val columnsList = mutableListOf<String>()
+        val columnsResults = columnsStatement.executeQuery()
 
-            while (columnsResults.next()){
-                columnsList.add(columnsResults.getString(1))
-            }
-
-            val rows = mutableListOf(Values(*columnsList.toTypedArray()))
-
-            var sqlQuery = "SELECT * FROM $table"
-
-            if(orderColumn.isNotBlank()){
-                sqlQuery += " ORDER BY $orderColumn $orderStyle"
-            }
-
-            val tablePreparedStatement = connection!!.prepareStatement(sqlQuery)
-            val tableResults = tablePreparedStatement.executeQuery()
-
-            val tempList = mutableListOf<Any>()
-
-            var i = 0
-            while (tableResults.next() && i < limit){
-                i++
-                for (y in 1..columnsList.size){
-                    tempList.add(tableResults.getString(y))
-                }
-                rows.add(Values(*tempList.toTypedArray()))
-                tempList.clear()
-            }
-            dbCache.tableRows = rows
-            whatToRun.codeToRun()
+        while (columnsResults.next()){
+            columnsList.add(columnsResults.getString(1))
         }
+
+        val rows = mutableListOf(Values(*columnsList.toTypedArray()))
+
+        var sqlQuery = "SELECT * FROM $table"
+
+        if(orderColumn.isNotBlank()){
+            sqlQuery += " ORDER BY $orderColumn $orderStyle;"
+        }
+
+        val tablePreparedStatement = connection!!.prepareStatement(sqlQuery)
+        val tableResults = tablePreparedStatement.executeQuery()
+
+        val tempList = mutableListOf<Any>()
+
+        var i = 0
+        while (tableResults.next() && i < limit){
+            i++
+            for (y in 1..columnsList.size){
+                tempList.add(tableResults.getString(y))
+            }
+            rows.add(Values(*tempList.toTypedArray()))
+            tempList.clear()
+        }
+
+        return rows
     }
 
     fun connect(){
@@ -191,17 +197,17 @@ class SQLStorage(
             if(connection!!.isClosed) {
                 try{
                     connection = createConnection()
-                    logger.info("Connected to ${database}!")
+                    logger.info("Connected to playerData!")
                 }catch (ex: SQLException){
                     ex.printStackTrace()
                 }
                 return
             }
-            logger.info("Is already connected to ${database}!")
+            logger.info("Is already connected to playerData!")
         }else{
             try{
                 connection = createConnection()
-                logger.info("Connected to ${database}!")
+                logger.info("Connected to playerData!")
             }catch (ex: SQLException){
                 ex.printStackTrace()
             }
@@ -209,10 +215,9 @@ class SQLStorage(
     }
 
     private fun createConnection(): Connection {
-        Class.forName("org.mariadb.jdbc.Driver")
+        Class.forName("org.h2.Driver")
         return DriverManager.getConnection(
-            "jdbc:mariadb://${host}:${port}/${database}",
-            username, password
+            "jdbc:h2:${plugin.dataFolder.absolutePath}\\data\\playerData"
         )
     }
     fun disconnect() {

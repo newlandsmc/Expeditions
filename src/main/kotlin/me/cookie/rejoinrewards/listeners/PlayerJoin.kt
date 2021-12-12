@@ -21,6 +21,8 @@ class PlayerJoin: Listener {
             )
         )
 
+        player.initIntoDB()
+
         playerRewardMap[player.uniqueId] = player.generateOfflineRewards()
 
         if(playerRewardMap[player.uniqueId]!!.isNotEmpty()){
