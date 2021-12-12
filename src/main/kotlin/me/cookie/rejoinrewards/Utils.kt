@@ -3,12 +3,18 @@ package me.cookie.rejoinrewards
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.entity.Player
+import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
 class Utils
 
+private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+
+// Component to plain string
 fun Component.toString(): String = PlainTextComponentSerializer.plainText().serialize(this)
-val playerLogoffMap = HashMap<UUID, Long>() /* TODO make storage persistent (database/file storage) */
+
+// Last logoff stuff
+private val playerLogoffMap = HashMap<UUID, Long>() /* TODO make storage persistent (database/file storage) */
 var Player.lastLogoff
     get() = run {
         playerLogoffMap.putIfAbsent(this.uniqueId, System.currentTimeMillis())
@@ -19,6 +25,7 @@ var Player.lastLogoff
         playerLogoffMap[this.uniqueId] = value!!
     }
 
+// Placeholder formatting
 fun String.formatPlayerPlaceholders(player: Player): String {
     var formatted = this
     if(this.contains("(playerName)"))

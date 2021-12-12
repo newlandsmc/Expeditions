@@ -12,7 +12,6 @@ class MenuHandler: Listener {
     fun onMenuClick(e: InventoryClickEvent) {
         val holder = e.inventory.holder
         if (holder is Menu) {
-            e.isCancelled = true
             if (e.currentItem == null) {
                 return
             }

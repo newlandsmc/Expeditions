@@ -5,6 +5,7 @@ import me.cookie.rejoinrewards.data.RewardConfig
 import me.cookie.rejoinrewards.listeners.MenuHandler
 import me.cookie.rejoinrewards.listeners.PlayerJoin
 import me.cookie.rejoinrewards.listeners.PlayerQuit
+import me.cookie.rejoinrewards.messagequeueing.MessageQueueing
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -15,7 +16,7 @@ class RejoinRewards: JavaPlugin() {
         registerCommands()
         registerEvents()
         rewardsConfig = RewardConfig()
-
+        MessageQueueing().startRunnable()
         saveDefaultConfig()
     }
 

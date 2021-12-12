@@ -1,6 +1,7 @@
 package me.cookie.rejoinrewards.listeners
 
 import me.cookie.rejoinrewards.*
+import me.cookie.rejoinrewards.messagequeueing.MessageQueueing.Companion.queueMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -20,11 +21,17 @@ class PlayerJoin: Listener {
             )
         )
 
-        plugin.logger.info(
-            "${player.name} was gone for ${(System.currentTimeMillis() - player.lastLogoff!!) / 60000} minute(s)."
-        )
-
         playerRewardMap[player.uniqueId] = player.generateOfflineRewards()
+
+        if(playerRewardMap[player.uniqueId]!!.isNotEmpty()){
+            player.queueMessage(
+                MiniMessage.get().parse(
+                    plugin.config.getString("claim-reminder")!!
+                ),
+                5
+            )
+        }
+
         /*
         object : BukkitRunnable() {
             override fun run() {
