@@ -14,7 +14,7 @@ val rewardConfig = plugin.rewardsConfig.getCustomConfig()
 val rewards = rewardConfig!!.getConfigurationSection("Rewards")!!.getKeys(false).toList()
 
 fun Player.generateOfflineRewards(): List<ItemStack> {
-    val offlineMinutes = /*(System.currentTimeMillis() - this.lastLogoff) / 60000*/ 400
+    val offlineMinutes = (System.currentTimeMillis() - this.lastLogoff) / 60000
     val items = mutableListOf<ItemStack>()
 
     items.addAll(this.rewardItems)

@@ -13,7 +13,7 @@ import java.util.*
 private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
 
 // Component to plain string
-fun Component.toString(): String = PlainTextComponentSerializer.plainText().serialize(this)
+fun Component.toPlainString(): String = PlainTextComponentSerializer.plainText().serialize(this)
 
 // Create player in database
 fun Player.initIntoDB(){
