@@ -3,12 +3,7 @@ package me.cookie.rejoinrewards
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.entity.Player
-import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
-
-class Utils
-
-private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
 
 // Component to plain string
 fun Component.toString(): String = PlainTextComponentSerializer.plainText().serialize(this)

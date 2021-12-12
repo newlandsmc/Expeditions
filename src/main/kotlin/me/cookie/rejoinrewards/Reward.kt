@@ -26,11 +26,14 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
             items.add(it)
         }
     }
+
+    val rewardKeys = rewardConfig!!.getConfigurationSection("Tiers")!!.getKeys(false)
+
     // Not eligible for new rewards.
     if (
         offlineMinutes
         <
-        rewardConfig!!.getConfigurationSection("Tiers")!!.getKeys(false).toList()[0].toInt()
+        rewardKeys.toList()[0].toInt()
     ) {
         return items
     }
@@ -38,7 +41,24 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
     var weight = 0
     var previousSection = "0"
     // Gets the weight for the offline tier
-    for(section in rewardConfig.getConfigurationSection("Tiers")!!.getKeys(false)){
+    for((i, section) in rewardKeys.withIndex()){
+        // Only for last tier
+        if(
+            offlineMinutes
+            >
+            previousSection.toInt()
+            &&
+            offlineMinutes
+            >=
+            section.toInt()
+            &&
+            i == rewardKeys.size
+        ){
+            weight = rewardConfig.getInt(
+                "Tiers.$section.weight"
+            )
+            break
+        }
         // Check if minutes is more than previous but less than current, if so, correct tier was found.
         if(
             offlineMinutes
@@ -52,6 +72,7 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
             weight = rewardConfig.getInt(
                 "Tiers.$previousSection.weight"
             )
+            break
         }
         previousSection = section
     }
