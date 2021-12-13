@@ -1,6 +1,6 @@
 package me.cookie.rejoinrewards.listeners
 
-import me.cookie.rejoinrewards.gui.Menu
+import me.cookie.semicore.gui.Menu
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent

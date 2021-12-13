@@ -1,7 +1,11 @@
 package me.cookie.rejoinrewards.commands
 
 import me.cookie.rejoinrewards.*
-import me.cookie.rejoinrewards.gui.menus.RewardGUI
+import me.cookie.rejoinrewards.menus.RewardGUI
+import me.cookie.rejoinrewards.getRewardItems
+import me.cookie.rejoinrewards.updateRewardItems
+import me.cookie.semicore.formatPlayerPlaceholders
+import me.cookie.semicore.playerMenuUtility
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -29,7 +33,7 @@ class ClaimReward: CommandExecutor {
             return true
         }
 
-        if(!player.hasPermission("jrewards.${args[0].lowercase()}")){
+        if(!player.hasPermission("jrewards.${args[0].toLowerCase()}")){
             player.sendMessage(
                 MiniMessage.get().parse(
                     plugin.config.getString("no-permission")!!

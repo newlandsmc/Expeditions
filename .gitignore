@@ -7,6 +7,11 @@
 /dataSources/
 /dataSources.local.xml
 
-# IDE files
-.idea/
-build/
+# IDEA files
+compiler.xml
+discord.xml
+gradle.xml
+jarRepositories.xml
+misc.xml
+vcs.xml
+

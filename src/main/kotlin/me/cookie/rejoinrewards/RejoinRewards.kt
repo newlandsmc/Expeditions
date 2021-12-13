@@ -6,7 +6,7 @@ import me.cookie.rejoinrewards.data.sql.database.H2Storage
 import me.cookie.rejoinrewards.listeners.MenuHandler
 import me.cookie.rejoinrewards.listeners.PlayerJoin
 import me.cookie.rejoinrewards.listeners.PlayerQuit
-import me.cookie.rejoinrewards.messagequeueing.MessageQueueing
+import me.cookie.semicore.messagequeueing.MessageQueueing
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -49,15 +49,3 @@ class RejoinRewards: JavaPlugin() {
     }
 }
 
-private val playerMenuUtilityMap = HashMap<Player, PlayerMenuUtility>()
-
-val Player.playerMenuUtility: PlayerMenuUtility
-get() {
-    val playerMenuUtility: PlayerMenuUtility
-    if (!(playerMenuUtilityMap.containsKey(this))) {
-        playerMenuUtility = PlayerMenuUtility(this)
-        playerMenuUtilityMap[this] = playerMenuUtility
-        return playerMenuUtility
-    }
-    return playerMenuUtilityMap[this]!!
-}

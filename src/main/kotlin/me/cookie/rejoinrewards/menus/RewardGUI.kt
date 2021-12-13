@@ -1,9 +1,9 @@
-package me.cookie.rejoinrewards.gui.menus
+package me.cookie.rejoinrewards.menus
 
-import me.cookie.rejoinrewards.PlayerMenuUtility
-import me.cookie.rejoinrewards.gui.Menu
 import me.cookie.rejoinrewards.rewardItems
 import me.cookie.rejoinrewards.updateRewardItems
+import me.cookie.semicore.PlayerMenuUtility
+import me.cookie.semicore.gui.Menu
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -27,8 +27,7 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
             if(it == null) return@forEach
             if(it.type != Material.AIR) contents.add(it)
         }
-        if(contents.isNotEmpty())
-            playerMenuUtility.owner.updateRewardItems(contents.toList())
+        playerMenuUtility.owner.updateRewardItems(contents.toList())
 
     }
 

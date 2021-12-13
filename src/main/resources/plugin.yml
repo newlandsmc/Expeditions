@@ -3,7 +3,10 @@ version: 1.0
 main: me.cookie.rejoinrewards.RejoinRewards
 description: A plugin that rewards players based on the time they were away.
 api-version: 1.18
-author: Cookie
+author: Cookie#8723
+
+depend:
+  - SemiCore
 
 commands:
   jrewards:
