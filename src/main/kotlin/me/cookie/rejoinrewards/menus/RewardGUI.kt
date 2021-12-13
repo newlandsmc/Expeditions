@@ -27,11 +27,11 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
             if(it == null) return@forEach
             if(it.type != Material.AIR) contents.add(it)
         }
-        playerMenuUtility.owner.updateRewardItems(contents.toList())
+        playerMenuUtility.player.updateRewardItems(contents.toList())
 
     }
 
     override fun setMenuItems() {
-        _inventory!!.setContents(playerMenuUtility.owner.rewardItems.toTypedArray())
+        _inventory!!.setContents(playerMenuUtility.player.rewardItems.toTypedArray())
     }
 }

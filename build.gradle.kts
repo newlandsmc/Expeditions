@@ -16,7 +16,8 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
-    compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    //compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    compileOnly(files("D:\\coding\\Test Servers\\TimeRewards\\plugins\\SemiCore-1.0-all.jar"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
 
