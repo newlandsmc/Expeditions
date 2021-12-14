@@ -3,6 +3,7 @@ package me.cookie.rejoinrewards.menus
 import me.cookie.rejoinrewards.rewardItems
 import me.cookie.rejoinrewards.updateRewardItems
 import me.cookie.semicore.PlayerMenuUtility
+import me.cookie.semicore.compressSimilarItems
 import me.cookie.semicore.gui.Menu
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
@@ -18,20 +19,22 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
         get() = 27
 
     override fun handleClick(e: InventoryClickEvent?) {
-        e!!.inventory.contents!!.asList()
+
     }
+
 
     override fun handleClose(e: InventoryCloseEvent) {
         val contents = mutableListOf<ItemStack>()
         e.inventory.contents!!.forEach {
             if(it == null) return@forEach
-            if(it.type != Material.AIR) contents.add(it)
+            if(it.type != Material.AIR) contents.add(it) // Clean inventory output
         }
-        playerMenuUtility.player.updateRewardItems(contents.toList())
+        val compressed = contents.compressSimilarItems()
+        playerMenuUtility.player.updateRewardItems(compressed)
 
     }
 
     override fun setMenuItems() {
-        _inventory!!.setContents(playerMenuUtility.player.rewardItems.toTypedArray())
+        _inventory!!.setContents(playerMenuUtility.player.rewardItems.compressSimilarItems().toTypedArray())
     }
 }
