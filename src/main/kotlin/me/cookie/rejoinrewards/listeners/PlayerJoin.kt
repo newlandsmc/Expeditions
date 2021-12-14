@@ -1,7 +1,9 @@
 package me.cookie.rejoinrewards.listeners
 
-import me.cookie.rejoinrewards.*
-import me.cookie.semicore.formatPlayerPlaceholders
+import me.cookie.rejoinrewards.RejoinRewards
+import me.cookie.rejoinrewards.generateOfflineRewards
+import me.cookie.rejoinrewards.initIntoDB
+import me.cookie.rejoinrewards.updateRewardItems
 import me.cookie.semicore.message.messagequeueing.MessageQueueing.Companion.queueMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
@@ -15,12 +17,13 @@ class PlayerJoin: Listener {
     fun onPlayerSpawn(event: PlayerJoinEvent){
         val player = event.player
 
-        event.joinMessage(
+        //TODO to move out of here into join plugin
+        /*event.joinMessage(
             MiniMessage.get().parse(
                 plugin.config.getString("welcome-back")!!
                     .formatPlayerPlaceholders(event.player)
             )
-        )
+        )*/
 
         player.initIntoDB()
 

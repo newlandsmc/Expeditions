@@ -1,9 +1,10 @@
 package me.cookie.rejoinrewards.commands
 
-import me.cookie.rejoinrewards.*
-import me.cookie.rejoinrewards.menus.RewardGUI
+import me.cookie.rejoinrewards.RejoinRewards
 import me.cookie.rejoinrewards.getRewardItems
+import me.cookie.rejoinrewards.menus.RewardGUI
 import me.cookie.rejoinrewards.updateRewardItems
+import me.cookie.semicore.SemiCore
 import me.cookie.semicore.formatPlayerPlaceholders
 import me.cookie.semicore.playerMenuUtility
 import net.kyori.adventure.text.Component
@@ -19,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class ClaimReward: CommandExecutor {
     private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+    private val semiCore = JavaPlugin.getPlugin(SemiCore::class.java)
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player){
             plugin.logger.info("Only players are allowed to execute this command")
@@ -36,7 +38,7 @@ class ClaimReward: CommandExecutor {
         if(!player.hasPermission("jrewards.${args[0].toLowerCase()}")){
             player.sendMessage(
                 MiniMessage.get().parse(
-                    plugin.config.getString("no-permission")!!
+                    semiCore.config.getString("no-permission")!!
                         .formatPlayerPlaceholders(player)
                 )
             )
@@ -52,7 +54,7 @@ class ClaimReward: CommandExecutor {
                 if(args.size < 2){
                     player.sendMessage(
                         MiniMessage.get().parse(
-                            plugin.config.getString("invalid-usage")!!
+                            semiCore.config.getString("invalid-usage")!!
                                 .formatPlayerPlaceholders(player)
                         )
                     )
@@ -76,7 +78,7 @@ class ClaimReward: CommandExecutor {
                 if(args.size < 2){
                     player.sendMessage(
                         MiniMessage.get().parse(
-                            plugin.config.getString("invalid-usage")!!
+                            semiCore.config.getString("invalid-usage")!!
                                 .formatPlayerPlaceholders(player)
                         )
                     )

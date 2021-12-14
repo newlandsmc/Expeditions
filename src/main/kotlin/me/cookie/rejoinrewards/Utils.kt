@@ -1,11 +1,10 @@
 package me.cookie.rejoinrewards
 
 import me.cookie.rejoinrewards.data.sql.database.Values
+import me.cookie.semicore.cleanUp
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import me.cookie.semicore.cleanUp
 import org.bukkit.util.NumberConversions.toLong
-import java.util.*
 
 
 private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
