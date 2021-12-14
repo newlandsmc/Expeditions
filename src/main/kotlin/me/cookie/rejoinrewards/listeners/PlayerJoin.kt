@@ -4,7 +4,7 @@ import me.cookie.rejoinrewards.RejoinRewards
 import me.cookie.rejoinrewards.generateOfflineRewards
 import me.cookie.rejoinrewards.initIntoDB
 import me.cookie.rejoinrewards.updateRewardItems
-import me.cookie.semicore.message.messagequeueing.MessageQueueing.Companion.queueMessage
+import me.cookie.semicore.message.messagequeueing.queueMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
