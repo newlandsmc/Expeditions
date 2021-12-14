@@ -2,7 +2,7 @@ package me.cookie.rejoinrewards.listeners
 
 import me.cookie.rejoinrewards.*
 import me.cookie.semicore.formatPlayerPlaceholders
-import me.cookie.semicore.messagequeueing.MessageQueueing.Companion.queueMessage
+import me.cookie.semicore.message.messagequeueing.MessageQueueing.Companion.queueMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
