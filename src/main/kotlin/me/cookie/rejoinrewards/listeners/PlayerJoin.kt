@@ -14,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class PlayerJoin: Listener {
     private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
     @EventHandler
-    fun onPlayerSpawn(event: PlayerJoinEvent){
+    fun onPlayerJoin(event: PlayerJoinEvent){
         val player = event.player
 
         //TODO to move out of here into join plugin
