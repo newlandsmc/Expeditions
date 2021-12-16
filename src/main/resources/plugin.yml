@@ -1,6 +1,6 @@
-name: RejoinRewards
+name: Expeditions
 version: 1.0
-main: me.cookie.rejoinrewards.RejoinRewards
+main: me.cookie.expeditions.Expeditions
 description: A plugin that rewards players based on the time they were away.
 api-version: 1.18
 author: Cookie#8723
@@ -9,21 +9,18 @@ depend:
   - SemiCore
 
 commands:
-  jrewards:
-    permission: jrewards.use
-    description: Base command.
-    usage: /jrewards
+  spoils:
+    permission: expeditions.spoils.claim
+    description: Base spoils command
+    usage: /spoils
 
 permissions:
-  jrewards.use:
-    description: Base command permission, without it you wont be able to use any subcommands.
-    default: op
-  jrewards.claim:
+  expeditions.spoils.claim:
     description: Permission to allow the player to claim their rejoin rewards.
     default: op
-  jrewards.view:
+  expeditions.spoils.view:
     description: Permission to allow the viewing of other player's rewards.
     default: op
-  jrewards.clear:
+  expeditions.spoils.clear:
     description: Permission to allow clearing of other player's rewards.
     default: op

@@ -1,13 +1,13 @@
-package me.cookie.rejoinrewards
+package me.cookie.expeditions
 
-import me.cookie.rejoinrewards.data.sql.database.Values
+import me.cookie.expeditions.data.sql.database.Values
 import me.cookie.semicore.cleanUp
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.util.NumberConversions.toLong
 
 
-private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
 
 // Create player in database
 fun Player.initIntoDB(){

@@ -1,8 +1,9 @@
-package me.cookie.rejoinrewards
+package me.cookie.expeditions
 
-import me.cookie.rejoinrewards.data.sql.database.Values
+import me.cookie.expeditions.data.sql.database.Values
 
 import me.cookie.semicore.cleanUp
+import me.cookie.semicore.compressSimilarItems
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
@@ -11,7 +12,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
-private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
 
 val rewardConfig = plugin.rewardsConfig.getCustomConfig()
 val rewards = rewardConfig!!.getConfigurationSection("Rewards")!!.getKeys(false).toList()
@@ -84,6 +85,7 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
             items.add(
                 ItemStack(Material.valueOf(reward))
             )
+            items.compressSimilarItems()
             if(items.size >= 27) return items // hard limit, inventory is full
         }
 

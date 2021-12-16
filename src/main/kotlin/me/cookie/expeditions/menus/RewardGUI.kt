@@ -1,7 +1,7 @@
-package me.cookie.rejoinrewards.menus
+package me.cookie.expeditions.menus
 
-import me.cookie.rejoinrewards.rewardItems
-import me.cookie.rejoinrewards.updateRewardItems
+import me.cookie.expeditions.rewardItems
+import me.cookie.expeditions.updateRewardItems
 import me.cookie.semicore.PlayerMenuUtility
 import me.cookie.semicore.compressSimilarItems
 import me.cookie.semicore.gui.Menu
@@ -9,6 +9,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 
 
@@ -18,8 +19,12 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
     override val slots: Int
         get() = 27
 
-    override fun handleClick(e: InventoryClickEvent?) {
-
+    override fun handleClick(e: InventoryClickEvent) {
+        if(e.clickedInventory == null) return
+        if(e.clickedInventory!!.type == InventoryType.PLAYER){
+            // Players are not allowed to put items in the gui
+            e.isCancelled = true
+        }
     }
 
 

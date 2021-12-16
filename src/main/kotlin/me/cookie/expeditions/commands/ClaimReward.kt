@@ -1,14 +1,13 @@
-package me.cookie.rejoinrewards.commands
+package me.cookie.expeditions.commands
 
-import me.cookie.rejoinrewards.RejoinRewards
-import me.cookie.rejoinrewards.getRewardItems
-import me.cookie.rejoinrewards.menus.RewardGUI
-import me.cookie.rejoinrewards.updateRewardItems
+import me.cookie.expeditions.Expeditions
+import me.cookie.expeditions.getRewardItems
+import me.cookie.expeditions.menus.RewardGUI
+import me.cookie.expeditions.updateRewardItems
 import me.cookie.semicore.SemiCore
 import me.cookie.semicore.formatPlayerPlaceholders
 import me.cookie.semicore.playerMenuUtility
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
@@ -19,26 +18,34 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.plugin.java.JavaPlugin
 
 class ClaimReward: CommandExecutor {
-    private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+    private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
     private val semiCore = JavaPlugin.getPlugin(SemiCore::class.java)
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player){
             plugin.logger.info("Only players are allowed to execute this command")
             return true
         }
-        val player = sender
+        val player = sender as Player
 
         if(args.isEmpty()){
-            player.sendMessage(
-                Component.text("I think you meant /jrewards claim", NamedTextColor.RED)
-            )
+            if(!player.hasPermission("expeditions.spoils.claim")){
+                player.sendMessage(
+                    MiniMessage.get().parse(
+                        semiCore.config.getString("no-permission")!!
+                            .formatPlayerPlaceholders(player)
+                    )
+                )
+                return true
+            }
+            val rewardGUI = RewardGUI(player.playerMenuUtility)
+            rewardGUI.open()
             return true
         }
 
-        if(!player.hasPermission("jrewards.${args[0].toLowerCase()}")){
+        if(!listOf("view", "clear").contains(args[0].toLowerCase()) /* Check if sub command exists */){
             player.sendMessage(
                 MiniMessage.get().parse(
-                    semiCore.config.getString("no-permission")!!
+                    semiCore.config.getString("invalid-usage")!!
                         .formatPlayerPlaceholders(player)
                 )
             )
@@ -46,11 +53,16 @@ class ClaimReward: CommandExecutor {
         }
 
         when(args[0]){
-            "claim" -> {
-                val rewardGUI = RewardGUI(player.playerMenuUtility)
-                rewardGUI.open()
-            }
             "view" -> {
+                if(!player.hasPermission("expeditions.spoils.view")){
+                    player.sendMessage(
+                        MiniMessage.get().parse(
+                            semiCore.config.getString("no-permission")!!
+                                .formatPlayerPlaceholders(player)
+                        )
+                    )
+                    return true
+                }
                 if(args.size < 2){
                     player.sendMessage(
                         MiniMessage.get().parse(
@@ -75,6 +87,15 @@ class ClaimReward: CommandExecutor {
                 return true
             }
             "clear" -> {
+                if(!player.hasPermission("expeditions.spoils.clear")){
+                    player.sendMessage(
+                        MiniMessage.get().parse(
+                            semiCore.config.getString("no-permission")!!
+                                .formatPlayerPlaceholders(player)
+                        )
+                    )
+                    return true
+                }
                 if(args.size < 2){
                     player.sendMessage(
                         MiniMessage.get().parse(

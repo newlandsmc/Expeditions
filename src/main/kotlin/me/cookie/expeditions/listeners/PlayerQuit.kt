@@ -1,6 +1,6 @@
-package me.cookie.rejoinrewards.listeners
+package me.cookie.expeditions.listeners
 
-import me.cookie.rejoinrewards.lastLogoff
+import me.cookie.expeditions.lastLogoff
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerKickEvent

@@ -1,4 +1,4 @@
-package me.cookie.rejoinrewards
+package me.cookie.expeditions
 
 open class MethodHolder {
     open fun codeToRun(){

@@ -1,15 +1,15 @@
-package me.cookie.rejoinrewards.data.sql.database
+package me.cookie.expeditions.data.sql.database
 
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import me.cookie.rejoinrewards.RejoinRewards
+import me.cookie.expeditions.Expeditions
 import org.bukkit.plugin.java.JavaPlugin
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 
 class H2Storage {
-    private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+    private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
     private val logger = plugin.logger
 
     private var connection: Connection? = null

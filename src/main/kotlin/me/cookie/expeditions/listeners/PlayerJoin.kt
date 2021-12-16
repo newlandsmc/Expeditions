@@ -1,9 +1,9 @@
-package me.cookie.rejoinrewards.listeners
+package me.cookie.expeditions.listeners
 
-import me.cookie.rejoinrewards.RejoinRewards
-import me.cookie.rejoinrewards.generateOfflineRewards
-import me.cookie.rejoinrewards.initIntoDB
-import me.cookie.rejoinrewards.updateRewardItems
+import me.cookie.expeditions.Expeditions
+import me.cookie.expeditions.generateOfflineRewards
+import me.cookie.expeditions.initIntoDB
+import me.cookie.expeditions.updateRewardItems
 import me.cookie.semicore.message.messagequeueing.queueMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 
 class PlayerJoin: Listener {
-    private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+    private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent){
         val player = event.player

@@ -1,15 +1,14 @@
-package me.cookie.rejoinrewards
+package me.cookie.expeditions
 
-import me.cookie.rejoinrewards.commands.ClaimReward
-import me.cookie.rejoinrewards.data.RewardConfig
-import me.cookie.rejoinrewards.data.sql.database.H2Storage
-import me.cookie.rejoinrewards.listeners.MenuHandler
-import me.cookie.rejoinrewards.listeners.PlayerJoin
-import me.cookie.rejoinrewards.listeners.PlayerQuit
+import me.cookie.expeditions.commands.ClaimReward
+import me.cookie.expeditions.data.RewardConfig
+import me.cookie.expeditions.data.sql.database.H2Storage
+import me.cookie.expeditions.listeners.PlayerJoin
+import me.cookie.expeditions.listeners.PlayerQuit
 import org.bukkit.plugin.java.JavaPlugin
 
 
-class RejoinRewards: JavaPlugin() {
+class Expeditions: JavaPlugin() {
     lateinit var rewardsConfig: RewardConfig
     lateinit var database: H2Storage
     override fun onEnable() {
@@ -36,12 +35,11 @@ class RejoinRewards: JavaPlugin() {
     }
 
     private fun registerCommands(){
-        getCommand("jrewards")!!.setExecutor(ClaimReward())
+        getCommand("spoils")!!.setExecutor(ClaimReward())
     }
     private fun registerEvents(){
         server.pluginManager.registerEvents(PlayerJoin(), this)
         server.pluginManager.registerEvents(PlayerQuit(), this)
-        server.pluginManager.registerEvents(MenuHandler(), this)
     }
 }
 

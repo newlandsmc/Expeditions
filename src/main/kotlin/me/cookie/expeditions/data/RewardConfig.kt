@@ -1,6 +1,6 @@
-package me.cookie.rejoinrewards.data
+package me.cookie.expeditions.data
 
-import me.cookie.rejoinrewards.RejoinRewards
+import me.cookie.expeditions.Expeditions
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
@@ -10,7 +10,7 @@ import java.io.IOException
 
 
 class RewardConfig {
-    private val plugin = JavaPlugin.getPlugin(RejoinRewards::class.java)
+    private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
     private var customConfigFile: File? = null
     private var customConfig: FileConfiguration? = null
 
