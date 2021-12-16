@@ -8,6 +8,7 @@ import me.cookie.semicore.SemiCore
 import me.cookie.semicore.formatPlayerPlaceholders
 import me.cookie.semicore.playerMenuUtility
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
@@ -25,7 +26,7 @@ class ClaimReward: CommandExecutor {
             plugin.logger.info("Only players are allowed to execute this command")
             return true
         }
-        val player = sender as Player
+        val player = sender
 
         if(args.isEmpty()){
             if(!player.hasPermission("expeditions.spoils.claim")){
@@ -75,10 +76,15 @@ class ClaimReward: CommandExecutor {
 
                 val viewing = Bukkit.getPlayer(args[1])
 
+                if(viewing == null) {
+                    player.sendMessage(Component.text("That player does not exist.", NamedTextColor.RED))
+                    return true
+                }
+
                 val inventory = Bukkit.createInventory(
                     player,
                     InventoryType.CHEST,
-                    Component.text("Viewing ${viewing!!.name}'s rewards.")
+                    Component.text("Viewing ${viewing.name}'s rewards.")
                 )
 
                 inventory.setContents(getRewardItems(viewing.uniqueId).toTypedArray()) // Fill the inventory with their rewards
