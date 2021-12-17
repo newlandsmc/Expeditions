@@ -17,14 +17,6 @@ class PlayerJoin: Listener {
     fun onPlayerJoin(event: PlayerJoinEvent){
         val player = event.player
 
-        //TODO to move out of here into join plugin
-        /*event.joinMessage(
-            MiniMessage.get().parse(
-                plugin.config.getString("welcome-back")!!
-                    .formatPlayerPlaceholders(event.player)
-            )
-        )*/
-
         player.initIntoDB()
 
         val generatedItems = player.generateOfflineRewards()
