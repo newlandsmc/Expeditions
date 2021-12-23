@@ -155,6 +155,7 @@ fun getRewardItems(uuid: UUID): List<ItemStack>{
             encodedArray.dropLast(1).forEach {
                 if(items.size >= 27) return items // hard limit, inventory is full
                 items.add(ItemStack.deserializeBytes(Base64.getDecoder().decode(it)))
+                items.compressSimilarItems()
             }
         }
     }
