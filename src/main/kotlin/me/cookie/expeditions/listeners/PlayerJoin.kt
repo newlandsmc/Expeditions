@@ -4,7 +4,7 @@ import me.cookie.expeditions.Expeditions
 import me.cookie.expeditions.generateOfflineRewards
 import me.cookie.expeditions.initIntoDB
 import me.cookie.expeditions.updateRewardItems
-import me.cookie.semicore.message.messagequeueing.queueMessage
+import me.cookie.cookiecore.message.messagequeueing.queueMessage
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

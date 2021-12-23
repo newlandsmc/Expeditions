@@ -2,8 +2,8 @@ package me.cookie.expeditions
 
 import me.cookie.expeditions.data.sql.database.Values
 
-import me.cookie.semicore.cleanUp
-import me.cookie.semicore.compressSimilarItems
+import me.cookie.cookiecore.cleanUp
+import me.cookie.cookiecore.compressSimilarItems
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material

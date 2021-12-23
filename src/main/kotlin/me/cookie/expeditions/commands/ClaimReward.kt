@@ -4,9 +4,9 @@ import me.cookie.expeditions.Expeditions
 import me.cookie.expeditions.getRewardItems
 import me.cookie.expeditions.menus.RewardGUI
 import me.cookie.expeditions.updateRewardItems
-import me.cookie.semicore.SemiCore
-import me.cookie.semicore.formatPlayerPlaceholders
-import me.cookie.semicore.playerMenuUtility
+import me.cookie.cookiecore.CookieCore
+import me.cookie.cookiecore.formatPlayerPlaceholders
+import me.cookie.cookiecore.playerMenuUtility
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -20,7 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class ClaimReward: CommandExecutor {
     private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
-    private val semiCore = JavaPlugin.getPlugin(SemiCore::class.java)
+    private val semiCore = JavaPlugin.getPlugin(CookieCore::class.java)
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender !is Player){
             plugin.logger.info("Only players are allowed to execute this command")

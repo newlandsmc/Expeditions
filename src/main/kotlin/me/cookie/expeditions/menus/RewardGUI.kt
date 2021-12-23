@@ -2,9 +2,9 @@ package me.cookie.expeditions.menus
 
 import me.cookie.expeditions.rewardItems
 import me.cookie.expeditions.updateRewardItems
-import me.cookie.semicore.PlayerMenuUtility
-import me.cookie.semicore.compressSimilarItems
-import me.cookie.semicore.gui.Menu
+import me.cookie.cookiecore.PlayerMenuUtility
+import me.cookie.cookiecore.compressSimilarItems
+import me.cookie.cookiecore.gui.Menu
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
