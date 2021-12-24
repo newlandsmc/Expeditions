@@ -1,11 +1,12 @@
 package me.cookie.expeditions.listeners
 
+import me.cookie.cookiecore.formatMinimessage
+import me.cookie.cookiecore.formatPlayerPlaceholders
+import me.cookie.cookiecore.message.messagequeueing.queueMessage
 import me.cookie.expeditions.Expeditions
 import me.cookie.expeditions.generateOfflineRewards
 import me.cookie.expeditions.initIntoDB
 import me.cookie.expeditions.updateRewardItems
-import me.cookie.cookiecore.message.messagequeueing.queueMessage
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -22,9 +23,9 @@ class PlayerJoin: Listener {
         val generatedItems = player.generateOfflineRewards()
         if(generatedItems.isNotEmpty()){
             player.queueMessage(
-                MiniMessage.get().parse(
-                    plugin.config.getString("claim-reminder")!!
-                ),
+                plugin.config.getString("claim-reminder")!!
+                    .formatPlayerPlaceholders(player)
+                    .formatMinimessage(),
                 5
             )
             player.updateRewardItems(generatedItems)
