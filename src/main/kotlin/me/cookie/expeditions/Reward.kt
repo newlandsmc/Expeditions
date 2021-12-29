@@ -19,7 +19,7 @@ val rewards = rewardConfig!!.getConfigurationSection("Rewards")!!.getKeys(false)
 
 fun Player.generateOfflineRewards(): List<ItemStack> {
     val offlineMinutes = (System.currentTimeMillis() - this.lastLogoff) / 60000
-    val items = mutableListOf<ItemStack>()
+    var items = mutableListOf<ItemStack>()
 
     items.addAll(this.rewardItems)
 
@@ -85,12 +85,41 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
             items.add(
                 ItemStack(Material.valueOf(reward))
             )
-            items.compressSimilarItems()
+            items = items.compressSimilarItems()
+
             if(items.size >= 27) return items // hard limit, inventory is full
         }
 
     }
 
+    return items
+}
+
+fun Player.giveVoteRewards(): List<ItemStack> {
+    var items = mutableListOf<ItemStack>()
+    var weight = rewardConfig!!.getInt("VoteTier.weight")
+    while(weight > 0){
+
+        // Player doesn't have enough weight for this reward
+        val reward = rewards[Random().nextInt(rewards.size)]
+        val rewardWeight = rewardConfig.getInt("Rewards.$reward.weight")
+        if(rewardWeight > weight) {
+            continue
+        } else{
+            weight -= rewardWeight
+            items.add(
+                ItemStack(Material.valueOf(reward))
+            )
+            if(items.size >= 27){
+                items = items.compressSimilarItems() // Compress and check if inv is full
+                if(items.size >= 27){
+                    return items
+                }
+            }
+        }
+
+    }
+    items = items.compressSimilarItems()
     return items
 }
 
@@ -139,7 +168,7 @@ fun Player.updateRewardItems(items: List<ItemStack>){
 }
 
 fun getRewardItems(uuid: UUID): List<ItemStack>{
-    val items = mutableListOf<ItemStack>()
+    var items = mutableListOf<ItemStack>()
     val row = plugin.database.getRowsWhere(
         "playerData",
         "ITEMS",
@@ -155,10 +184,11 @@ fun getRewardItems(uuid: UUID): List<ItemStack>{
             encodedArray.dropLast(1).forEach {
                 if(items.size >= 27) return items // hard limit, inventory is full
                 items.add(ItemStack.deserializeBytes(Base64.getDecoder().decode(it)))
-                items.compressSimilarItems()
+                items = items.compressSimilarItems()
             }
         }
     }
+    items = items.compressSimilarItems()
     return items
 }
 

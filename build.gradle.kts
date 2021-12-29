@@ -12,15 +12,20 @@ repositories {
     maven {
         url = uri("https://papermc.io/repo/repository/maven-public/")
     }
+    maven {
+        url = uri("https://nexus.bencodez.com/repository/maven-public/") // some guy's repo that has NuVotifier
+        // Because the GitHub one doesnt work
+    }
 }
 
 dependencies {
     compileOnly(kotlin("stdlib"))
     //compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    compileOnly(files("D:\\coding\\Test Servers\\TimeRewards\\plugins\\CookieCore-1.0-all.jar"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
+    compileOnly(files("/home/cookie/TestServers/sudoyou/plugins/CookieCore-1.0-all.jar"))
+    compileOnly("com.vexsoftware:nuvotifier-universal:2.7.2")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
@@ -30,7 +35,7 @@ java {
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    destinationDirectory.set(file("D:\\coding\\Test Servers\\TimeRewards\\plugins"))
+    destinationDirectory.set(file("/home/cookie/TestServers/sudoyou/plugins/"))
 }
 
 tasks.getByName<Test>("test") {

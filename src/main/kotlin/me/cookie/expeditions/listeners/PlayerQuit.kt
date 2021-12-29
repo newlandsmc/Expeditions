@@ -7,12 +7,10 @@ import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
 class PlayerQuit: Listener {
-    @EventHandler
-    fun onPlayerDisconnect(event: PlayerQuitEvent){
+    @EventHandler fun onPlayerDisconnect(event: PlayerQuitEvent){
         event.player.lastLogoff = System.currentTimeMillis()
     }
-    @EventHandler
-    fun onPlayerKicked(event: PlayerKickEvent){
+    @EventHandler fun onPlayerKicked(event: PlayerKickEvent){
         event.player.lastLogoff = System.currentTimeMillis()
     }
 }

@@ -1,10 +1,12 @@
 package me.cookie.expeditions
 
 import me.cookie.expeditions.commands.ClaimReward
+import me.cookie.expeditions.commands.TestVote
 import me.cookie.expeditions.data.RewardConfig
 import me.cookie.expeditions.data.sql.database.H2Storage
 import me.cookie.expeditions.listeners.PlayerJoin
 import me.cookie.expeditions.listeners.PlayerQuit
+import me.cookie.expeditions.listeners.PlayerVote
 import org.bukkit.plugin.java.JavaPlugin
 
 
@@ -36,10 +38,12 @@ class Expeditions: JavaPlugin() {
 
     private fun registerCommands(){
         getCommand("spoils")!!.setExecutor(ClaimReward())
+        getCommand("TestVote")!!.setExecutor(TestVote())
     }
     private fun registerEvents(){
         server.pluginManager.registerEvents(PlayerJoin(), this)
         server.pluginManager.registerEvents(PlayerQuit(), this)
+        server.pluginManager.registerEvents(PlayerVote(), this)
     }
 }
 
