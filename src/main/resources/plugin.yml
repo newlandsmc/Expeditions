@@ -14,10 +14,10 @@ commands:
     permission: expeditions.spoils.claim
     description: Base spoils command
     usage: /spoils
-  testvote:
+  etv:
     permission: expeditions.vote.test
     description: Opens a gui to test voting
-    usage: /testvote
+    usage: /evt
 
 permissions:
   expeditions.spoils.claim:

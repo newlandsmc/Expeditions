@@ -38,7 +38,7 @@ class Expeditions: JavaPlugin() {
 
     private fun registerCommands(){
         getCommand("spoils")!!.setExecutor(ClaimReward())
-        getCommand("testvote")!!.setExecutor(TestVote())
+        getCommand("etv")!!.setExecutor(TestVote())
     }
     private fun registerEvents(){
         server.pluginManager.registerEvents(PlayerJoin(), this)
