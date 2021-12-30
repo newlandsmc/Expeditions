@@ -1,9 +1,9 @@
 package me.cookie.expeditions
 
+import me.cookie.cookiecore.data.sql.H2Storage
 import me.cookie.expeditions.commands.ClaimReward
 import me.cookie.expeditions.commands.TestVote
 import me.cookie.expeditions.data.RewardConfig
-import me.cookie.expeditions.data.sql.database.H2Storage
 import me.cookie.expeditions.listeners.PlayerJoin
 import me.cookie.expeditions.listeners.PlayerQuit
 import me.cookie.expeditions.listeners.PlayerVote
@@ -22,7 +22,7 @@ class Expeditions: JavaPlugin() {
 
         saveDefaultConfig()
 
-        database = H2Storage()
+        database = H2Storage(this, "playerData")
 
         database.connect()
 

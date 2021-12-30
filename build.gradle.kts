@@ -25,7 +25,6 @@ dependencies {
     compileOnly("com.vexsoftware:nuvotifier-universal:2.7.2")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
