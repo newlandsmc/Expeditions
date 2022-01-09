@@ -11,8 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 
-class PlayerJoin: Listener {
-    private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
+class PlayerJoin(private val plugin: JavaPlugin): Listener {
     @EventHandler fun onPlayerJoin(event: PlayerJoinEvent){
         val player = event.player
 

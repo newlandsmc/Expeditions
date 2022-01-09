@@ -1,12 +1,10 @@
 package me.cookie.expeditions.commands
 
-import me.cookie.expeditions.Expeditions
+import me.cookie.cookiecore.formatPlayerPlaceholders
+import me.cookie.cookiecore.playerMenuUtility
 import me.cookie.expeditions.getRewardItems
 import me.cookie.expeditions.menus.RewardGUI
 import me.cookie.expeditions.updateRewardItems
-import me.cookie.cookiecore.CookieCore
-import me.cookie.cookiecore.formatPlayerPlaceholders
-import me.cookie.cookiecore.playerMenuUtility
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -19,13 +17,8 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
-class ClaimReward: CommandExecutor {
-    private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
-    var semiCore: JavaPlugin? = null
+class ClaimReward(private val plugin: JavaPlugin, private val cookieCore: JavaPlugin): CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if(semiCore == null){ // Prevents class not found errors
-            semiCore = JavaPlugin.getPlugin(CookieCore::class.java)
-        }
         if(sender !is Player){
             plugin.logger.info("Only players are allowed to execute this command")
             return true
@@ -36,7 +29,7 @@ class ClaimReward: CommandExecutor {
             if(!player.hasPermission("expeditions.spoils.claim")){
                 player.sendMessage(
                     MiniMessage.get().parse(
-                        semiCore!!.config.getString("no-permission")!!
+                        cookieCore.config.getString("no-permission")!!
                             .formatPlayerPlaceholders(player)
                     )
                 )
@@ -50,7 +43,7 @@ class ClaimReward: CommandExecutor {
         if(!listOf("view", "clear").contains(args[0].lowercase(Locale.getDefault())) /* Check if sub command exists */){
             player.sendMessage(
                 MiniMessage.get().parse(
-                    semiCore!!.config.getString("invalid-usage")!!
+                    cookieCore.config.getString("invalid-usage")!!
                         .formatPlayerPlaceholders(player)
                 )
             )
@@ -62,7 +55,7 @@ class ClaimReward: CommandExecutor {
                 if(!player.hasPermission("expeditions.spoils.view")){
                     player.sendMessage(
                         MiniMessage.get().parse(
-                            semiCore!!.config.getString("no-permission")!!
+                            cookieCore.config.getString("no-permission")!!
                                 .formatPlayerPlaceholders(player)
                         )
                     )
@@ -71,7 +64,7 @@ class ClaimReward: CommandExecutor {
                 if(args.size < 2){
                     player.sendMessage(
                         MiniMessage.get().parse(
-                            semiCore!!.config.getString("invalid-usage")!!
+                            cookieCore.config.getString("invalid-usage")!!
                                 .formatPlayerPlaceholders(player)
                         )
                     )
@@ -100,7 +93,7 @@ class ClaimReward: CommandExecutor {
                 if(!player.hasPermission("expeditions.spoils.clear")){
                     player.sendMessage(
                         MiniMessage.get().parse(
-                            semiCore!!.config.getString("no-permission")!!
+                            cookieCore.config.getString("no-permission")!!
                                 .formatPlayerPlaceholders(player)
                         )
                     )
@@ -109,7 +102,7 @@ class ClaimReward: CommandExecutor {
                 if(args.size < 2){
                     player.sendMessage(
                         MiniMessage.get().parse(
-                            semiCore!!.config.getString("invalid-usage")!!
+                            cookieCore.config.getString("invalid-usage")!!
                                 .formatPlayerPlaceholders(player)
                         )
                     )
