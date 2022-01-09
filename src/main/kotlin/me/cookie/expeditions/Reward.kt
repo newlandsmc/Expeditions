@@ -17,11 +17,10 @@ private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
 val rewardConfig = plugin.rewardsConfig.getCustomConfig()
 val rewards = rewardConfig!!.getConfigurationSection("Rewards")!!.getKeys(false).toList()
 
-fun Player.generateOfflineRewards(): List<ItemStack> {
-    val offlineMinutes = (System.currentTimeMillis() - this.lastLogoff) / 60000
+fun Player.generateOfflineRewards(offlineMinutes: Long, addOldRewards: Boolean): List<ItemStack> {
     var items = mutableListOf<ItemStack>()
-
-    items.addAll(this.rewardItems)
+    if(addOldRewards)
+        items.addAll(this.rewardItems)
 
     val rewardKeys = rewardConfig!!.getConfigurationSection("Tiers")!!.getKeys(false)
 
@@ -72,55 +71,61 @@ fun Player.generateOfflineRewards(): List<ItemStack> {
         }
         previousSection = section
     }
+
+    val newItems = calcRewards(weight)
+    newItems.forEach{
+        if(items.size >= 27) return items
+        items.add(it)
+        items = items.compressSimilarItems()
+    }
+    return items
+}
+
+fun calcRewards(weight: Int): List<ItemStack>{
+    rewardConfig!!
+    var items = mutableListOf<ItemStack>()
+    var tmpWeight = weight
+
     // I know while loops the main thread, but let's hope for the best :)
     // Keeps looping until out of weight
-    while(weight > 0){
-        // Player doesn't have enough weight for this reward
+    while(tmpWeight > 0){
         val reward = rewards[Random().nextInt(rewards.size)]
         val rewardWeight = rewardConfig.getInt("Rewards.$reward.weight")
-        if(rewardWeight > weight) {
+        val rewardChanceAgain = rewardConfig.getInt("Rewards.$reward.chance-again")
+        val rewardWeightAgain = rewardConfig.getInt("Rewards.$reward.weight-again")
+
+        if(rewardWeight > tmpWeight){ // Player doesn't have enough weight for this reward
             continue
-        } else{
-            weight -= rewardWeight
+        }else{
+            tmpWeight -= rewardWeight
             items.add(
                 ItemStack(Material.valueOf(reward))
             )
             items = items.compressSimilarItems()
 
             if(items.size >= 27) return items // hard limit, inventory is full
-        }
 
-    }
+            if(rewardChanceAgain < 0.randomTo(100) &&
+                rewardWeightAgain < tmpWeight){
 
-    return items
-}
+                tmpWeight -= rewardWeightAgain
 
-fun Player.giveVoteRewards(): List<ItemStack> {
-    var items = mutableListOf<ItemStack>()
-    var weight = rewardConfig!!.getInt("VoteTier.weight")
-    while(weight > 0){
+                items.add(
+                    ItemStack(Material.valueOf(reward))
+                )
+                items = items.compressSimilarItems()
 
-        // Player doesn't have enough weight for this reward
-        val reward = rewards[Random().nextInt(rewards.size)]
-        val rewardWeight = rewardConfig.getInt("Rewards.$reward.weight")
-        if(rewardWeight > weight) {
-            continue
-        } else{
-            weight -= rewardWeight
-            items.add(
-                ItemStack(Material.valueOf(reward))
-            )
-            if(items.size >= 27){
-                items = items.compressSimilarItems() // Compress and check if inv is full
-                if(items.size >= 27){
-                    return items
-                }
+                if(items.size >= 27) return items // hard limit, inventory is full
             }
         }
 
     }
     items = items.compressSimilarItems()
     return items
+}
+
+fun Player.giveVoteRewards(): List<ItemStack> {
+    return calcRewards(rewardConfig!!.getInt("VoteTier.weight"))
 }
 
 fun Player.spawnOfflineReward() {

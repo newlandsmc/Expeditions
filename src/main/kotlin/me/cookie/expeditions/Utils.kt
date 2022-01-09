@@ -5,10 +5,14 @@ import me.cookie.cookiecore.cleanUp
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.util.NumberConversions.toLong
+import kotlin.random.Random
 
 
 private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
+fun Int.randomTo(cap: Int): Int {
+    return Random.nextInt((cap-this))+this
 
+}
 // Create player in database
 fun Player.initIntoDB(){
     val playerUUID = plugin.database.getRowsWhere(

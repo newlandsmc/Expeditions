@@ -20,6 +20,10 @@ commands:
     permission: expeditions.vote.test
     description: Opens a gui to test voting
     usage: /evt
+  testrewards:
+    permission: expeditions.spoils.testrewards
+    description: Test the possible rewards without being actually offline
+    usage: /testrewards <"time"|"weight"> <number>
 
 permissions:
   expeditions.spoils.claim:
@@ -30,4 +34,7 @@ permissions:
     default: op
   expeditions.spoils.clear:
     description: Permission to allow clearing of other player's rewards.
+    default: op
+  expeditions.spoils.testrewards:
+    description: Permission to allow testing possible rewards of time offline or weight
     default: op

@@ -3,9 +3,10 @@ package me.cookie.expeditions.listeners
 import me.cookie.cookiecore.formatMinimessage
 import me.cookie.cookiecore.formatPlayerPlaceholders
 import me.cookie.cookiecore.message.messagequeueing.queueMessage
-import me.cookie.expeditions.*
-import net.kyori.adventure.text.Component
-import org.bukkit.Bukkit
+import me.cookie.expeditions.generateOfflineRewards
+import me.cookie.expeditions.initIntoDB
+import me.cookie.expeditions.lastLogoff
+import me.cookie.expeditions.updateRewardItems
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -17,7 +18,10 @@ class PlayerJoin(private val plugin: JavaPlugin): Listener {
 
         player.initIntoDB()
 
-        val generatedItems = player.generateOfflineRewards()
+        val generatedItems = player.generateOfflineRewards(
+            (System.currentTimeMillis() - player.lastLogoff) / 60000,
+            plugin.config.getBoolean("add-old-items")
+        )
         if(generatedItems.isNotEmpty()){
             player.queueMessage(
                 plugin.config.getString("claim-reminder")!!
@@ -27,11 +31,6 @@ class PlayerJoin(private val plugin: JavaPlugin): Listener {
             )
             player.updateRewardItems(generatedItems)
         }
-
-        val inventory = Bukkit.createInventory(null, 27, Component.text("CHEEZ"))
-        inventory.setContents(player.giveVoteRewards().toTypedArray())
-
-        player.openInventory(inventory)
 
         /*
         object : BukkitRunnable() {

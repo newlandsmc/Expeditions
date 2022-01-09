@@ -4,9 +4,11 @@ import com.vexsoftware.votifier.model.Vote
 import com.vexsoftware.votifier.model.VotifierEvent
 import me.cookie.cookiecore.PlayerMenuUtility
 import me.cookie.cookiecore.gui.Menu
+import me.cookie.expeditions.giveVoteRewards
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.ItemStack
@@ -19,13 +21,14 @@ class TestVoteGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility
 
     override fun handleClick(e: InventoryClickEvent) {
         val clickedItem = e.currentItem ?: return
+        val player = e.whoClicked as Player
         e.isCancelled = true
         when(clickedItem.type){
             Material.RED_WOOL -> {
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
                        "Test 1",
-                       e.whoClicked.name,
+                       player.name,
                        "0.0.0.0",
                         System.currentTimeMillis().toString()
                     )
@@ -35,7 +38,7 @@ class TestVoteGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
                         "Test 2",
-                        e.whoClicked.name,
+                        player.name,
                         "0.0.0.0",
                         System.currentTimeMillis().toString()
                     )
@@ -45,7 +48,7 @@ class TestVoteGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
                         "Test 3",
-                        e.whoClicked.name,
+                        player.name,
                         "0.0.0.0",
                         System.currentTimeMillis().toString()
                     )
@@ -55,11 +58,17 @@ class TestVoteGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
                         "Test 4",
-                        e.whoClicked.name,
+                        player.name,
                         "0.0.0.0",
                         System.currentTimeMillis().toString()
                     )
                 ))
+            }
+            Material.GRAY_WOOL -> {
+                val inventory = Bukkit.createInventory(null, 27, Component.text("CHEEZ"))
+                inventory.setContents(player.giveVoteRewards().toTypedArray())
+
+                player.openInventory(inventory)
             }
             else -> {
                 return
@@ -88,6 +97,10 @@ class TestVoteGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility
         inventory.setItem(
             3,
             ItemStack(Material.BLUE_WOOL)
+        )
+        inventory.setItem(
+            8,
+            ItemStack(Material.GRAY_WOOL)
         )
     }
 }
