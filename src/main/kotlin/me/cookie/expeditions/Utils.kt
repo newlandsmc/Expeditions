@@ -1,6 +1,6 @@
 package me.cookie.expeditions
 
-import me.cookie.expeditions.data.sql.database.Values
+import me.cookie.cookiecore.data.Values
 import me.cookie.cookiecore.cleanUp
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin

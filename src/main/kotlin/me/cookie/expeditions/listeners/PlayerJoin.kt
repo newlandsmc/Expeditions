@@ -30,7 +30,7 @@ class PlayerJoin: Listener {
         }
 
         val inventory = Bukkit.createInventory(null, 27, Component.text("CHEEZ"))
-        inventory.setContents(*player.giveVoteRewards().toTypedArray())
+        inventory.setContents(player.giveVoteRewards().toTypedArray())
 
         player.openInventory(inventory)
 
