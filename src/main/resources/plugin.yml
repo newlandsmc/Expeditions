@@ -14,7 +14,7 @@ depend:
 commands:
   spoils:
     permission: expeditions.spoils.claim
-    description: Base spoils command.
+    description: Opens a gui with available spoils to claim.
     usage: /spoils
   etv:
     permission: expeditions.vote.test
