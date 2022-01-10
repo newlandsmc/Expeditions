@@ -14,16 +14,20 @@ depend:
 commands:
   spoils:
     permission: expeditions.spoils.claim
-    description: Base spoils command
+    description: Base spoils command.
     usage: /spoils
   etv:
     permission: expeditions.vote.test
-    description: Opens a gui to test voting
+    description: Opens a gui to test voting.
     usage: /evt
   testrewards:
     permission: expeditions.spoils.testrewards
-    description: Test the possible rewards without being actually offline
-    usage: /testrewards <"time"|"weight"> <number>
+    description: Test the possible rewards without being actually offline.
+    usage: /testrewards <time|weight> <number>
+  expeditions:
+    permission: expeditions.admin
+    description: Collection of admin commands to set/remove/etc rewards of players.
+    usage: /expeditions <set|add|clear|view> <player> <weight|time> <number>
 
 permissions:
   expeditions.spoils.claim:
@@ -36,5 +40,8 @@ permissions:
     description: Permission to allow clearing of other player's rewards.
     default: op
   expeditions.spoils.testrewards:
-    description: Permission to allow testing possible rewards of time offline or weight
+    description: Permission to allow testing possible rewards of time offline or weight.
+    default: op
+  expeditions.admin:
+    description: Permission to allow usage of expedition admin commands.
     default: op

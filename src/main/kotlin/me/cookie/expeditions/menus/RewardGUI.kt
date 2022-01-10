@@ -1,7 +1,6 @@
 package me.cookie.expeditions.menus
 
 import me.cookie.expeditions.rewardItems
-import me.cookie.expeditions.updateRewardItems
 import me.cookie.cookiecore.PlayerMenuUtility
 import me.cookie.cookiecore.compressSimilarItems
 import me.cookie.cookiecore.gui.Menu
@@ -35,11 +34,11 @@ class RewardGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) 
             if(it.type != Material.AIR) contents.add(it) // Clean inventory output
         }
         val compressed = contents.compressSimilarItems()
-        playerMenuUtility.player.updateRewardItems(compressed)
+        playerMenuUtility.player.rewardItems = compressed
 
     }
 
     override fun setMenuItems() {
-        _inventory!!.setContents(playerMenuUtility.player.rewardItems.compressSimilarItems().toTypedArray())
+        cInventory!!.setContents(playerMenuUtility.player.rewardItems.compressSimilarItems().toTypedArray())
     }
 }

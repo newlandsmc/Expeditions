@@ -142,7 +142,7 @@ fun Player.spawnOfflineReward() {
     )
 }
 
-fun updateRewardItems(items: List<ItemStack>, uuid: UUID){
+private fun updateRewardItems(items: List<ItemStack>, uuid: UUID){
     var serializedItems = ""
     if(items.isNotEmpty()){
         items.forEach {
@@ -166,41 +166,42 @@ fun updateRewardItems(items: List<ItemStack>, uuid: UUID){
         Values("")
     )
 }
-
-// Updates the items in their virtual reward chest
-fun Player.updateRewardItems(items: List<ItemStack>){
-    updateRewardItems(items, this.uniqueId)
-}
-
-fun getRewardItems(uuid: UUID): List<ItemStack>{
-    var items = mutableListOf<ItemStack>()
-    val row = plugin.database.getRowsWhere(
-        "playerData",
-        "ITEMS",
-        "UUID = '${uuid.cleanUp()}'"
-    )
-
-    // Add old rewards
-    if(row.isNotEmpty()){
-        if(row[0].values.isNotEmpty()){
-            if((row[0].values[0] as String).isEmpty()) return emptyList()
-            val encodedArray = (row[0].values[0] as String).split(",")
-            if(encodedArray.isEmpty()) return emptyList()
-            encodedArray.dropLast(1).forEach {
-                if(items.size >= 27) return items // hard limit, inventory is full
-                items.add(ItemStack.deserializeBytes(Base64.getDecoder().decode(it)))
-                items = items.compressSimilarItems()
-            }
+fun Player.addRewards(items: List<ItemStack>){
+    var oldItems = this.rewardItems.toMutableList()
+    items.forEach{
+        if(oldItems.size >= 27) {
+            this.rewardItems = oldItems
+            return
         }
+        oldItems.add(it)
+        oldItems = oldItems.compressSimilarItems()
     }
-    items = items.compressSimilarItems()
-    return items
+    this.rewardItems = oldItems
 }
-
 var Player.rewardItems: List<ItemStack>
     get() = run {
-        getRewardItems(this.uniqueId)
+        var items = mutableListOf<ItemStack>()
+        val row = plugin.database.getRowsWhere(
+            "playerData",
+            "ITEMS",
+            "UUID = '${this.uniqueId.cleanUp()}'"
+        )
+
+        if(row.isNotEmpty()){
+            if(row[0].values.isNotEmpty()){
+                if((row[0].values[0] as String).isEmpty()) return emptyList()
+                val encodedArray = (row[0].values[0] as String).split(",")
+                if(encodedArray.isEmpty()) return emptyList()
+                encodedArray.dropLast(1).forEach {
+                    if(items.size >= 27) return items // hard limit, inventory is full
+                    items.add(ItemStack.deserializeBytes(Base64.getDecoder().decode(it)))
+                    items = items.compressSimilarItems()
+                }
+            }
+        }
+        items = items.compressSimilarItems()
+        return items
     }
     set(value) {
-        this.updateRewardItems(value)
+        updateRewardItems(value, this.uniqueId)
     }

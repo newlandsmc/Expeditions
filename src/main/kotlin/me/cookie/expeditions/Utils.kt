@@ -46,3 +46,7 @@ var Player.lastLogoff: Long
             Values(value),
         )
     }
+
+fun String.isNumber(): Boolean {
+    return if (this.isEmpty()) false else this.all { Character.isDigit(it) }
+}

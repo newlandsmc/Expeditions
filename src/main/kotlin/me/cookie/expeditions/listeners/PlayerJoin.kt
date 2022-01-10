@@ -6,7 +6,7 @@ import me.cookie.cookiecore.message.messagequeueing.queueMessage
 import me.cookie.expeditions.generateOfflineRewards
 import me.cookie.expeditions.initIntoDB
 import me.cookie.expeditions.lastLogoff
-import me.cookie.expeditions.updateRewardItems
+import me.cookie.expeditions.rewardItems
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -29,7 +29,7 @@ class PlayerJoin(private val plugin: JavaPlugin): Listener {
                     .formatMinimessage(),
                 5
             )
-            player.updateRewardItems(generatedItems)
+            player.rewardItems = generatedItems
         }
 
         /*
