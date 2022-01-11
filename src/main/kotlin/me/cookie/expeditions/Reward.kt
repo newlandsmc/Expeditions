@@ -4,11 +4,15 @@ import me.cookie.cookiecore.data.Values
 
 import me.cookie.cookiecore.cleanUp
 import me.cookie.cookiecore.compressSimilarItems
+import me.cookie.cookiecore.formatMinimessage
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
@@ -205,3 +209,26 @@ var Player.rewardItems: List<ItemStack>
     set(value) {
         updateRewardItems(value, this.uniqueId)
     }
+
+val COOKIE_OF_LOVE = run {
+    val item = ItemStack(Material.COOKIE)
+    val meta = item.itemMeta
+    val lore = listOf(
+        Component.text("A piece from our hearts to you, literally", NamedTextColor.GRAY)
+            .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
+        Component.text("Regeneration 1 for 5 seconds when eaten", NamedTextColor.GRAY)
+            .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
+    )
+    meta.displayName(
+        Component.empty().decoration( // Wow, such great api design
+            TextDecoration.ITALIC, TextDecoration.State.FALSE
+        ).append("<b><color:#be32ed>Cookie of LOVE </b><color:#ff0090>❤".formatMinimessage())
+    )
+    meta.lore(lore)
+    meta.persistentDataContainer.set(
+        NamespacedKey(plugin, "item_id"),
+        PersistentDataType.STRING, "COOKIE_OF_LOVE"
+    )
+    item.itemMeta = meta
+    item
+}

@@ -8,6 +8,7 @@ import me.cookie.expeditions.commands.RewardAdmin
 import me.cookie.expeditions.commands.TestRewards
 import me.cookie.expeditions.commands.TestVote
 import me.cookie.expeditions.data.RewardConfig
+import me.cookie.expeditions.listeners.PlayerInteract
 import me.cookie.expeditions.listeners.PlayerJoin
 import me.cookie.expeditions.listeners.PlayerQuit
 import me.cookie.expeditions.listeners.PlayerVote
@@ -50,6 +51,7 @@ class Expeditions: JavaPlugin() {
     }
     private fun registerEvents(){
         server.pluginManager.registerEvents(PlayerJoin(this), this)
+        server.pluginManager.registerEvents(PlayerInteract(this), this)
         server.pluginManager.registerEvents(PlayerQuit(), this)
         server.pluginManager.registerEvents(PlayerVote(), this)
     }
