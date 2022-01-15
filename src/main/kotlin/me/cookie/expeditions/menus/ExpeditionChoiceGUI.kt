@@ -29,12 +29,14 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                     "<red>You don't have any expeditions to claim!"
                         .formatMinimessage()
                 )
+                return
             }
             if(e.slot == 14){
                 playerMenuUtility.player.sendMessage(
                     "<red>You don't have any instant expeditions to claim!"
                         .formatMinimessage()
                 )
+                return
             }
         }
         when(e.slot){
@@ -92,7 +94,7 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                         ).append("<gray>You dont have any rewards here.".formatMinimessage()),
                         Component.empty().decoration( // Wow, such great api design
                             TextDecoration.ITALIC, TextDecoration.State.FALSE
-                        ).append(" Come back later!".formatMinimessage())
+                        ).append("<gray>Come back later!".formatMinimessage())
                     )
                     .withFlags(ItemFlag.HIDE_ATTRIBUTES)
                     .build()
@@ -138,7 +140,7 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                         ).append("<gray>You dont have any rewards here.".formatMinimessage()),
                         Component.empty().decoration( // Wow, such great api design
                             TextDecoration.ITALIC, TextDecoration.State.FALSE
-                        ).append(" Come back later!".formatMinimessage())
+                        ).append("<gray>Come back later!".formatMinimessage())
                     )
                     .build()
             )
