@@ -4,7 +4,7 @@ import com.vexsoftware.votifier.model.Vote
 import com.vexsoftware.votifier.model.VotifierEvent
 import me.cookie.cookiecore.PlayerMenuUtility
 import me.cookie.cookiecore.gui.Menu
-import me.cookie.expeditions.giveVoteRewards
+import me.cookie.expeditions.generateVoteRewards
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -12,6 +12,8 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.ItemStack
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class TestVoteGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility) {
     override val menuName: Component
@@ -23,50 +25,51 @@ class TestVoteGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMenuUtility
         val clickedItem = e.currentItem ?: return
         val player = e.whoClicked as Player
         e.isCancelled = true
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss Z")
         when(clickedItem.type){
             Material.RED_WOOL -> {
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
-                       "Test 1",
-                       player.name,
+                       "Test1",
+                        player.name,
                        "0.0.0.0",
-                        System.currentTimeMillis().toString()
+                        ZonedDateTime.now().format(formatter)
                     )
                 ))
             }
             Material.YELLOW_WOOL -> {
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
-                        "Test 2",
-                        player.name,
+                        "Test2",
+                         player.name,
                         "0.0.0.0",
-                        System.currentTimeMillis().toString()
+                        ZonedDateTime.now().format(formatter)
                     )
                 ))
             }
             Material.GREEN_WOOL -> {
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
-                        "Test 3",
-                        player.name,
+                        "Test3",
+                         player.name,
                         "0.0.0.0",
-                        System.currentTimeMillis().toString()
+                        ZonedDateTime.now().format(formatter)
                     )
                 ))
             }
             Material.BLUE_WOOL -> {
                 Bukkit.getPluginManager().callEvent(VotifierEvent(
                     Vote(
-                        "Test 4",
-                        player.name,
+                        "Test4",
+                         player.name,
                         "0.0.0.0",
-                        System.currentTimeMillis().toString()
+                        ZonedDateTime.now().format(formatter)
                     )
                 ))
             }
             Material.GRAY_WOOL -> {
                 val inventory = Bukkit.createInventory(null, 27, Component.text("CHEEZ"))
-                inventory.setContents(player.giveVoteRewards().toTypedArray())
+                inventory.setContents(player.generateVoteRewards().toTypedArray())
 
                 player.openInventory(inventory)
             }

@@ -15,31 +15,31 @@ fun Int.randomTo(cap: Int): Int {
 }
 // Create player in database
 fun Player.initIntoDB(){
-    val playerUUID = plugin.database.getRowsWhere(
+    val playerUUID = plugin.playerItems.getRowsWhere(
         "playerData",
         "UUID",
         "UUID = '${this.uniqueId.cleanUp()}'",
     )
     // Doesnt exist in db
     if(playerUUID.isEmpty()){
-        plugin.database.insertIntoTable(
+        plugin.playerItems.insertIntoTable(
             "playerData",
-            listOf("UUID", "LOGOFF", "ITEMS"),
-            Values(this.uniqueId.cleanUp(), System.currentTimeMillis(), "")
+            listOf("UUID", "LOGOFF", "NORMALITEMS", "INSTANTITEMS"),
+            Values(this.uniqueId.cleanUp(), System.currentTimeMillis(), "", "")
         )
     }
 }
 
 // Last logoff stuff
 var Player.lastLogoff: Long
-    get() = toLong(plugin.database.getRowsWhere(
+    get() = toLong(plugin.playerItems.getRowsWhere(
         "playerData",
         "LOGOFF",
         "UUID = '${this.uniqueId.cleanUp()}'",
         1,
     )[0].values[0])
     set(value) {
-        plugin.database.updateColumnsWhere(
+        plugin.playerItems.updateColumnsWhere(
             "playerData",
             listOf("LOGOFF"),
             "UUID = '${this.uniqueId.cleanUp()}'",

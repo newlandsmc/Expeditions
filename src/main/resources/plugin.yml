@@ -45,3 +45,5 @@ permissions:
   expeditions.admin:
     description: Permission to allow usage of expedition admin commands.
     default: op
+  expeditions.vote.test:
+    default: op

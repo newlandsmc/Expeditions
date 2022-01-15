@@ -2,7 +2,7 @@ package me.cookie.expeditions.commands
 
 import me.cookie.cookiecore.NO_PERMISSION
 import me.cookie.cookiecore.playerMenuUtility
-import me.cookie.expeditions.menus.RewardGUI
+import me.cookie.expeditions.menus.ExpeditionChoiceGUI
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -24,8 +24,8 @@ class ClaimReward(private val plugin: JavaPlugin): CommandExecutor {
                 )
                 return true
             }
-            val rewardGUI = RewardGUI(player.playerMenuUtility)
-            rewardGUI.open()
+
+            ExpeditionChoiceGUI(player.playerMenuUtility).open()
             return true
         }
         return true

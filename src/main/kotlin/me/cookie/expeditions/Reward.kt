@@ -128,7 +128,7 @@ fun calcRewards(weight: Int): List<ItemStack>{
     return items
 }
 
-fun Player.giveVoteRewards(): List<ItemStack> {
+fun Player.generateVoteRewards(): List<ItemStack> {
     return calcRewards(rewardConfig!!.getInt("VoteTier.weight"))
 }
 
@@ -147,29 +147,52 @@ fun Player.spawnOfflineReward() {
 }
 
 private fun updateRewardItems(items: List<ItemStack>, uuid: UUID){
-    var serializedItems = ""
     if(items.isNotEmpty()){
-        items.forEach {
-            serializedItems += "${Base64.getEncoder().encodeToString(it.serializeAsBytes())},"
-        }
-        if(serializedItems.endsWith(",")){
-            serializedItems.dropLast(1)
-        }
-        plugin.database.updateColumnsWhere(
+        plugin.playerItems.updateColumnsWhere(
             "playerData",
-            listOf("ITEMS"),
+            listOf("NORMALITEMS"),
             "UUID = '${uuid.cleanUp()}'",
-            Values(serializedItems)
+            Values(items.serialize())
         )
         return
     }
-    plugin.database.updateColumnsWhere(
+    plugin.playerItems.updateColumnsWhere(
         "playerData",
-        listOf("ITEMS"),
+        listOf("NORMALITEMS"),
         "UUID = '${uuid.cleanUp()}'",
         Values("")
     )
 }
+
+private fun updateInstantRewardItems(items: List<ItemStack>, uuid: UUID){
+    if(items.isNotEmpty()){
+        plugin.playerItems.updateColumnsWhere(
+            "playerData",
+            listOf("INSTANTITEMS"),
+            "UUID = '${uuid.cleanUp()}'",
+            Values(items.serialize())
+        )
+        return
+    }
+    plugin.playerItems.updateColumnsWhere(
+        "playerData",
+        listOf("INSTANTITEMS"),
+        "UUID = '${uuid.cleanUp()}'",
+        Values("")
+    )
+}
+
+fun List<ItemStack>.serialize(): String {
+    var serializedItems = ""
+    this.forEach {
+        serializedItems += "${Base64.getEncoder().encodeToString(it.serializeAsBytes())},"
+    }
+    if(serializedItems.endsWith(",")){
+        serializedItems.dropLast(1)
+    }
+    return serializedItems
+}
+
 fun Player.addRewards(items: List<ItemStack>){
     var oldItems = this.rewardItems.toMutableList()
     items.forEach{
@@ -182,12 +205,26 @@ fun Player.addRewards(items: List<ItemStack>){
     }
     this.rewardItems = oldItems
 }
+
+fun Player.addInstantRewards(items: List<ItemStack>){
+    var oldItems = this.instantRewardItems.toMutableList()
+    items.forEach{
+        if(oldItems.size >= 27) {
+            this.instantRewardItems = oldItems
+            return
+        }
+        oldItems.add(it)
+        oldItems = oldItems.compressSimilarItems()
+    }
+    this.instantRewardItems = oldItems
+}
+
 var Player.rewardItems: List<ItemStack>
     get() = run {
         var items = mutableListOf<ItemStack>()
-        val row = plugin.database.getRowsWhere(
+        val row = plugin.playerItems.getRowsWhere(
             "playerData",
-            "ITEMS",
+            "NORMALITEMS",
             "UUID = '${this.uniqueId.cleanUp()}'"
         )
 
@@ -210,13 +247,42 @@ var Player.rewardItems: List<ItemStack>
         updateRewardItems(value, this.uniqueId)
     }
 
+var Player.instantRewardItems: List<ItemStack>
+    get() = run {
+        var items = mutableListOf<ItemStack>()
+        val row = plugin.playerItems.getRowsWhere(
+            "playerData",
+            "INSTANTITEMS",
+            "UUID = '${this.uniqueId.cleanUp()}'"
+        )
+
+        if(row.isNotEmpty()){
+            if(row[0].values.isNotEmpty()){
+                if((row[0].values[0] as String).isEmpty()) return emptyList()
+                val encodedArray = (row[0].values[0] as String).split(",")
+                if(encodedArray.isEmpty()) return emptyList()
+                encodedArray.dropLast(1).forEach {
+                    if(items.size >= 27) return items // hard limit, inventory is full
+                    items.add(ItemStack.deserializeBytes(Base64.getDecoder().decode(it)))
+                    items = items.compressSimilarItems()
+                }
+            }
+        }
+        items = items.compressSimilarItems()
+        return items
+    }
+    set(value) {
+        updateInstantRewardItems(value, this.uniqueId)
+    }
+
 val COOKIE_OF_LOVE = run {
     val item = ItemStack(Material.COOKIE)
     val meta = item.itemMeta
     val lore = listOf(
-        Component.text("A piece from our hearts to you, literally", NamedTextColor.GRAY)
+        Component.text("A piece of my heart to you, literally", NamedTextColor.GRAY)
             .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE),
-        Component.text("Regeneration 1 for 5 seconds when eaten", NamedTextColor.GRAY)
+        Component.empty(),
+        Component.text("(Plugin made with <3 by Cookie)", NamedTextColor.GRAY)
             .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
     )
     meta.displayName(
