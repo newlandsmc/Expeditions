@@ -12,4 +12,5 @@ vote-services:
   - "Test4"
 vote-incomplete-message: "<green>Thank you for voting (playerName)! Vote on all (voteServices) sites to receive a reward! [(playerVotesToday)/(voteServices)]"
 vote-complete-message: "<gold>Thank you for voting on all (voteServices) sites (playerName)! your support is much appreciated."
+vote-complete-announce: "<green> * (playerName) voted and earned an instant expedition! Use /vote to vote."
 instant-package-message: "Thanks for voting! Because you have the instant reward package you don't receive any extra rewords. Sorry!"

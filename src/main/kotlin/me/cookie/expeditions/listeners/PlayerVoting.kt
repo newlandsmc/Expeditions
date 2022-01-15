@@ -33,7 +33,7 @@ class PlayerVoting(private val plugin: JavaPlugin, private val playerVotes: H2St
         }
         val offlinePlayer = Bukkit.getOfflinePlayer(event.vote.username)
         if(!offlinePlayer.hasPlayedBefore()){
-            plugin.logger.info("Vote received from a never seen player. Ignoring")
+            plugin.logger.info("Vote received from a never seen player. Ignoring (${offlinePlayer.name})")
             return
         }
 
@@ -76,6 +76,13 @@ class PlayerVoting(private val plugin: JavaPlugin, private val playerVotes: H2St
                     )
                 }else{
                     onlinePlayer.addInstantRewards(onlinePlayer.generateVoteRewards())
+                }
+                Bukkit.getServer().onlinePlayers.forEach {
+                    it.sendMessage(
+                        plugin.config.getString("vote-complete-announce")!!
+                            .formatPlayerPlaceholders(onlinePlayer)
+                            .formatMinimessage()
+                    )
                 }
             }
         }

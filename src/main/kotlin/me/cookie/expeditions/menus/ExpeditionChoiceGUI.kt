@@ -21,6 +21,22 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
 
     override fun handleClick(e: InventoryClickEvent) {
         e.isCancelled = true
+        e.currentItem ?: return
+        if(e.currentItem!!.type == Material.AIR) return
+        if(e.currentItem!!.type == Material.GRAY_DYE) {
+            if(e.slot == 12){
+                playerMenuUtility.player.sendMessage(
+                    "<red>You don't have any expeditions to claim!"
+                        .formatMinimessage()
+                )
+            }
+            if(e.slot == 14){
+                playerMenuUtility.player.sendMessage(
+                    "<red>You don't have any instant expeditions to claim!"
+                        .formatMinimessage()
+                )
+            }
+        }
         when(e.slot){
             12 -> {
                 RewardGUI(playerMenuUtility).open()
@@ -73,7 +89,10 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                         ).append("<white>Obtained when you are offline for some time.".formatMinimessage()),
                         Component.empty().decoration( // Wow, such great api design
                             TextDecoration.ITALIC, TextDecoration.State.FALSE
-                        ).append("<gray>You dont have any rewards here. Come back later!".formatMinimessage())
+                        ).append("<gray>You dont have any rewards here.".formatMinimessage()),
+                        Component.empty().decoration( // Wow, such great api design
+                            TextDecoration.ITALIC, TextDecoration.State.FALSE
+                        ).append(" Come back later!".formatMinimessage())
                     )
                     .withFlags(ItemFlag.HIDE_ATTRIBUTES)
                     .build()
@@ -91,7 +110,10 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                     .withLore(
                         Component.empty().decoration( // Wow, such great api design
                             TextDecoration.ITALIC, TextDecoration.State.FALSE
-                        ).append("<white>Obtained by voting or purchasing instant expeditions!".formatMinimessage())
+                        ).append("<white>Obtained by voting or purchasing instant expeditions!".formatMinimessage()),
+                        Component.empty().decoration( // Wow, such great api design
+                            TextDecoration.ITALIC, TextDecoration.State.FALSE
+                        ).append("<white>instant expeditions!".formatMinimessage())
                     )
                     .build()
             )
@@ -110,7 +132,13 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                         ).append("<white>Obtained by voting or purchasing instant expeditions!".formatMinimessage()),
                         Component.empty().decoration( // Wow, such great api design
                             TextDecoration.ITALIC, TextDecoration.State.FALSE
-                        ).append("<gray>You dont have any rewards here. Come back later!".formatMinimessage())
+                        ).append("<white>instant expeditions!".formatMinimessage()),
+                        Component.empty().decoration( // Wow, such great api design
+                            TextDecoration.ITALIC, TextDecoration.State.FALSE
+                        ).append("<gray>You dont have any rewards here.".formatMinimessage()),
+                        Component.empty().decoration( // Wow, such great api design
+                            TextDecoration.ITALIC, TextDecoration.State.FALSE
+                        ).append(" Come back later!".formatMinimessage())
                     )
                     .build()
             )
