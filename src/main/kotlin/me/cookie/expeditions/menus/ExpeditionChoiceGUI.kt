@@ -64,11 +64,6 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                     TextDecoration.ITALIC, TextDecoration.State.FALSE
                 ).append("<aqua>Normal Expeditions".formatMinimessage())
             )
-            .withLore(
-                Component.empty().decoration( // Wow, such great api design
-                    TextDecoration.ITALIC, TextDecoration.State.FALSE
-                ).append("<white>Obtained when you are offline for some time.".formatMinimessage())
-            )
             .withFlags(ItemFlag.HIDE_ATTRIBUTES)
 
         val instantExpeditionsItem = ItemStackBuilder(Material.NETHER_STAR)
@@ -76,12 +71,17 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                 Component.empty().decoration( // Wow, such great api design
                     TextDecoration.ITALIC, TextDecoration.State.FALSE
                 ).append("<gold>Instant Expeditions".formatMinimessage())
-            ).withFlags(ItemFlag.HIDE_ATTRIBUTES)
+            )
+            .withFlags(ItemFlag.HIDE_ATTRIBUTES)
 
         if(playerMenuUtility.player.rewardItems.isNotEmpty()){
             inventory.setItem(
                 12,
-                    expeditionsItem.build()
+                    expeditionsItem.withLore(
+                        Component.empty().decoration( // Wow, such great api design
+                            TextDecoration.ITALIC, TextDecoration.State.FALSE
+                        ).append("<white>Obtained when you are offline for some time.".formatMinimessage())
+                    ).build()
             )
         }else{
             inventory.setItem(
@@ -104,8 +104,14 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
         if(playerMenuUtility.player.instantRewardItems.isNotEmpty()){
             inventory.setItem(
                 14,
-                instantExpeditionsItem
-                    .build()
+                instantExpeditionsItem.withLore(
+                    Component.empty().decoration( // Wow, such great api design
+                        TextDecoration.ITALIC, TextDecoration.State.FALSE
+                    ).append("<white>Obtained by voting <yellow>(/vote) <white>or purchasing".formatMinimessage()),
+                    Component.empty().decoration( // Wow, such great api design
+                        TextDecoration.ITALIC, TextDecoration.State.FALSE
+                    ).append("<white>instant expeditions!".formatMinimessage()),
+                ).build()
             )
         }else{
             inventory.setItem(
@@ -114,7 +120,7 @@ class ExpeditionChoiceGUI(playerMenuUtility: PlayerMenuUtility) : Menu(playerMen
                     .withLore(
                         Component.empty().decoration( // Wow, such great api design
                             TextDecoration.ITALIC, TextDecoration.State.FALSE
-                        ).append("<white>Obtained by voting or purchasing".formatMinimessage()),
+                        ).append("<white>Obtained by voting <yellow>(/vote) <white>or purchasing".formatMinimessage()),
                         Component.empty().decoration( // Wow, such great api design
                             TextDecoration.ITALIC, TextDecoration.State.FALSE
                         ).append("<white>instant expeditions!".formatMinimessage()),
