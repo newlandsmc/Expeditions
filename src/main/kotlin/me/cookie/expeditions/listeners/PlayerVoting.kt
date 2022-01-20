@@ -13,6 +13,7 @@ import me.cookie.expeditions.generateVoteRewards
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,6 +22,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.logging.Level
 
 
 class PlayerVoting(private val plugin: JavaPlugin, private val playerVotes: H2Storage): Listener {
@@ -32,29 +34,27 @@ class PlayerVoting(private val plugin: JavaPlugin, private val playerVotes: H2St
             return
         }
         val offlinePlayer = Bukkit.getOfflinePlayer(event.vote.username)
-        if(!offlinePlayer.hasPlayedBefore()){
-            plugin.logger.info("Vote received from a never seen player. Ignoring (${offlinePlayer.name})")
+
+        val onlinePlayer = offlinePlayer.player
+
+        if(!offlinePlayer.hasPlayedBefore() && onlinePlayer == null){
+            plugin.logger.log(Level.WARNING, "Vote received from never seen player, ignoring.")
             return
         }
 
-        val onlinePlayer = offlinePlayer.player
-        onlinePlayer!!
-
-        onlinePlayer.getVotes(ZonedDateTime.now().toLocalDate().atStartOfDay(ZoneId.systemDefault())).forEach { votes ->
+        offlinePlayer.getVotes(ZonedDateTime.now().toLocalDate().atStartOfDay(ZoneId.systemDefault())).forEach { votes ->
             votes.values.forEach { vote ->
                 if(vote == event.vote.serviceName){
-                    if(offlinePlayer.isOnline){
-                        onlinePlayer.sendMessage(
-                            Component.text("You already voted with that service today.", NamedTextColor.RED)
-                        )
-                    }
+                    onlinePlayer?.sendMessage(
+                        Component.text("You already voted with that service today.", NamedTextColor.RED)
+                    )
                     return
                 }
             }
         }
         addVote(event.vote)
-        val votes = onlinePlayer.getVotes(ZonedDateTime.now().toLocalDate().atStartOfDay(ZoneId.systemDefault()))
-        if(offlinePlayer.isOnline){
+        val votes = offlinePlayer.getVotes(ZonedDateTime.now().toLocalDate().atStartOfDay(ZoneId.systemDefault()))
+        if(onlinePlayer?.isOnline == true){
             onlinePlayer.sendMessage(
                 plugin.config.getString("vote-incomplete-message")!!
                     .formatServerPlaceholders(onlinePlayer)
@@ -97,16 +97,29 @@ class PlayerVoting(private val plugin: JavaPlugin, private val playerVotes: H2St
                 ZonedDateTime.now().format(formatter))
         )
     }
-    fun Player.getVotes(now: ZonedDateTime): List<Values>{
+    fun getVotes(username: String, now: ZonedDateTime): List<Values>{
         return playerVotes.getRowsWhere(
             "playerVotes",
             "SERVICE",
             "TIMESTAMP >= '${now.format(formatter).replace("12:00:00", "00:00:00")}' AND " +
                     "TIMESTAMP < '${now.plusDays(1).format(formatter).replace("12:00:00", "00:00:00")}' " +
-                    "AND PLAYER = '${this.name.lowercase(Locale.getDefault())}'",
+                    "AND PLAYER = '${username.lowercase(Locale.getDefault())}'",
             20
         )
     }
+
+    fun Player.getVotes(now: ZonedDateTime): List<Values>{
+        return getVotes(this.name, now)
+    }
+
+    fun OfflinePlayer.getVotes(now: ZonedDateTime): List<Values>{
+        this.name ?: run {
+            plugin.logger.log(Level.WARNING, "Player has no name?")
+            return listOf()
+        }
+        return getVotes(this.name!!, now)
+    }
+
     fun String.formatServerPlaceholders(player: Player): String {
         var formatted = this
         if(formatted.contains("(voteServices)")){
