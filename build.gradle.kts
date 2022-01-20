@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.cookie"
-version = "1.0"
+version = ""
 
 repositories {
     mavenCentral()
