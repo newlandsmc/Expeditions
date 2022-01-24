@@ -5,7 +5,6 @@ import me.cookie.cookiecore.CookieCore
 import me.cookie.cookiecore.data.sql.H2Storage
 import me.cookie.expeditions.commands.ClaimReward
 import me.cookie.expeditions.commands.RewardAdmin
-import me.cookie.expeditions.commands.TestRewards
 import me.cookie.expeditions.commands.TestVote
 import me.cookie.expeditions.data.RewardConfig
 import me.cookie.expeditions.listeners.PlayerJoin
@@ -52,13 +51,12 @@ class Expeditions: JavaPlugin() {
     private fun registerCommands(){
         getCommand("spoils")!!.setExecutor(ClaimReward(this))
         getCommand("etv")!!.setExecutor(TestVote(playerVotes))
-        getCommand("testrewards")!!.setExecutor(TestRewards())
         getCommand("expeditions")!!.setExecutor(RewardAdmin())
     }
     private fun registerEvents(){
         server.pluginManager.registerEvents(PlayerJoin(this), this)
         // server.pluginManager.registerEvents(PlayerInteract(this), this)  Saved for a rainy day
-        server.pluginManager.registerEvents(PlayerQuit(), this)
+        server.pluginManager.registerEvents(PlayerQuit(this), this)
         server.pluginManager.registerEvents(PlayerVoting(this, playerVotes), this)
     }
 }

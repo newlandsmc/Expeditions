@@ -21,10 +21,8 @@ private val plugin = JavaPlugin.getPlugin(Expeditions::class.java)
 val rewardConfig = plugin.rewardsConfig.getCustomConfig()
 val rewards = rewardConfig!!.getConfigurationSection("Rewards")!!.getKeys(false).toList()
 
-fun Player.generateOfflineRewards(offlineMinutes: Long, addOldRewards: Boolean): List<ItemStack> {
+fun Player.generateOfflineRewards(offlineMinutes: Long): List<ItemStack> {
     var items = mutableListOf<ItemStack>()
-    if(addOldRewards)
-        items.addAll(this.rewardItems)
 
     val rewardKeys = rewardConfig!!.getConfigurationSection("Tiers")!!.getKeys(false)
 

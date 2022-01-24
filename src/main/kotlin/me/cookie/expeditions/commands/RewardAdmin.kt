@@ -67,9 +67,9 @@ class RewardAdmin: CommandExecutor {
                             }
                             "time" -> {
                                 if(args[3].isNumber()){
-                                    target.rewardItems = target.generateOfflineRewards(
-                                        args[3].toLong(), true
-                                    )
+                                    target.addRewards(target.generateOfflineRewards(
+                                        args[3].toLong()
+                                    ))
                                 }else{
                                     sender.sendMessage(INVALID_USAGE)
                                 }
@@ -90,7 +90,7 @@ class RewardAdmin: CommandExecutor {
                             "time" -> {
                                 if(args[3].isNumber()){
                                     target.rewardItems = target.generateOfflineRewards(
-                                        args[3].toLong(), false)
+                                        args[3].toLong())
 
                                 }else{
                                     sender.sendMessage(INVALID_USAGE)

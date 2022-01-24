@@ -18,9 +18,11 @@ class PlayerJoin(private val plugin: JavaPlugin): Listener {
 
         player.initIntoDB()
 
+        if(!plugin.config.getBoolean("add-old-rewards"))
+            player.rewardItems = listOf()
+
         val generatedItems = player.generateOfflineRewards(
-            (System.currentTimeMillis() - player.lastLogoff) / 60000,
-            plugin.config.getBoolean("add-old-items")
+            (System.currentTimeMillis() - player.lastLogoff) / 60000
         )
         if(generatedItems.isNotEmpty()){
             player.queueMessage(
